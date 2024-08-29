@@ -1,4 +1,4 @@
-package com.CoffeeTech.Spring.CoffeeTech;
+package com.app.CoffeeTech;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
