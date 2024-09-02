@@ -1,11 +1,16 @@
 package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "Pedidos")
 public class PedidosEntity {
 
@@ -38,7 +43,5 @@ public class PedidosEntity {
 
     @OneToMany(mappedBy = "pedidos", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PedidosHasProductosEntity> pedidosHasProductos = new ArrayList<>();
-
-    // Getters and Setters
 
 }

@@ -1,10 +1,15 @@
 package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "Roles_has_Personas")
 public class RolesHasPersonasEntity {
 

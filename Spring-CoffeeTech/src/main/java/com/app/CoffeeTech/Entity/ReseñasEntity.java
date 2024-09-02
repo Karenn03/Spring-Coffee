@@ -1,9 +1,14 @@
 package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "Reseñas")
 public class ReseñasEntity {
 
@@ -32,7 +37,5 @@ public class ReseñasEntity {
             @JoinColumn(name = "Productos_TipoProducto_idTipoProducto", referencedColumnName = "TipoProducto_idTipoProducto")
     })
     private ProductosEntity producto;
-
-    // Getters and Setters
 
 }

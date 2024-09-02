@@ -1,9 +1,14 @@
 package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "Mesas")
 public class MesasEntity {
 
@@ -28,7 +33,5 @@ public class MesasEntity {
             @JoinColumn(name = "Reserva_Personas_idPersonas", referencedColumnName = "Personas_idPersonas")
     })
     private ReservaEntity reserva;
-
-    // Getters and Setters
 
 }

@@ -1,10 +1,15 @@
 package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "Promociones")
 public class PromocionesEntity {
 
@@ -44,7 +49,5 @@ public class PromocionesEntity {
 
     @OneToMany(mappedBy = "promocion")
     private Set<PromocionesHasProductosEntity> promocionesHasProductos;
-
-    // Getters and Setters
 
 }

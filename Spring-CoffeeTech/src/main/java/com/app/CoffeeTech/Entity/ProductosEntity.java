@@ -1,10 +1,15 @@
 package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 import java.util.List;
 import java.util.Set;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "Productos")
 public class ProductosEntity {
 
@@ -44,7 +49,5 @@ public class ProductosEntity {
 
     @OneToMany(mappedBy = "producto")
     private Set<PromocionesHasProductosEntity> promocionesHasProductos;
-
-    // Getters and Setters
 
 }

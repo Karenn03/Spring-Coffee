@@ -1,9 +1,14 @@
 package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "Tipo_Producto")
 public class TipoProductoEntity {
 
@@ -18,7 +23,5 @@ public class TipoProductoEntity {
 
     @OneToMany(mappedBy = "tipoProducto")
     private List<ProductosEntity> productos;
-
-    // Getters and Setters
 
 }

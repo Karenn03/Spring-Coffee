@@ -1,9 +1,14 @@
 package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "Personas")
 public class PersonaEntity {
 
@@ -54,7 +59,5 @@ public class PersonaEntity {
 
     @OneToMany(mappedBy = "persona")
     private ReseñasEntity reseñas;
-
-    // Getters and Setters
 
 }

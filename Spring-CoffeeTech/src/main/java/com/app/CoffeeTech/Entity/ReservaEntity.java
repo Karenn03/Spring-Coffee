@@ -1,11 +1,16 @@
 package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "Reserva")
 public class ReservaEntity {
 
@@ -30,7 +35,5 @@ public class ReservaEntity {
 
     @OneToOne(mappedBy = "reserva")
     private List<MesasEntity> mesas;
-
-    // Getters and Setters
 
 }

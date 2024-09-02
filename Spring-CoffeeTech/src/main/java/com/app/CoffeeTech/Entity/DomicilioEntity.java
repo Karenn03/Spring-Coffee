@@ -1,8 +1,13 @@
 package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "Domicilio")
 public class DomicilioEntity {
 
@@ -21,7 +26,5 @@ public class DomicilioEntity {
     @OneToOne
     @JoinColumn(name = "Pedidos_idPedidos", nullable = false)
     private PedidosEntity pedidos;
-
-    // Getters and Setters
 
 }
