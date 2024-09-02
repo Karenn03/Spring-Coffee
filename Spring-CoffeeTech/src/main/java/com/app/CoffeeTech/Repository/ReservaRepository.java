@@ -1,6 +1,6 @@
-package Repository;
+package com.app.CoffeeTech.Repository;
 
-import Entity.ReservaEntity;
+import com.app.CoffeeTech.Entity.ReservaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

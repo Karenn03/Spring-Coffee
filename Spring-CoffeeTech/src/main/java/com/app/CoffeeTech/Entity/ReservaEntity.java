@@ -3,6 +3,7 @@ package com.app.CoffeeTech.Entity;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @Entity
 @Table(name = "Reserva")
@@ -25,7 +26,10 @@ public class ReservaEntity {
 
     @ManyToOne
     @JoinColumn(name = "Personas_idPersonas", nullable = false)
-    private PersonaEntity personas;
+    private PersonaEntity persona;
+
+    @OneToOne(mappedBy = "reserva")
+    private List<MesasEntity> mesas;
 
     // Getters and Setters
 

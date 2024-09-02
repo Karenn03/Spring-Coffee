@@ -1,6 +1,6 @@
-package Repository;
+package com.app.CoffeeTech.Repository;
 
-import Entity.PedidosHasProductosEntity;
+import com.app.CoffeeTech.Entity.PedidosHasProductosEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

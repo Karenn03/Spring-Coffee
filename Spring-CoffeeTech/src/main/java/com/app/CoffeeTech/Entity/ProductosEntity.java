@@ -33,14 +33,14 @@ public class ProductosEntity {
     @OneToMany(mappedBy = "producto")
     private Set<ReseñasEntity> reseñas;
 
-    @OneToMany(mappedBy = "productos")
+    @OneToMany(mappedBy = "producto")
     private Set<ProductosHasCarritoComprasEntity> productosHasCarritoCompras;
 
     @OneToMany(mappedBy = "producto")
     private List<VentasHasProductosEntity> ventasHasProductos;
 
-    @OneToMany(mappedBy = "producto")
-    private Set<PedidosHasProductosEntity> pedidoHasProductos;
+    @OneToMany(mappedBy = "productos")
+    private Set<PedidosHasProductosEntity> pedidosHasProductos;
 
     @OneToMany(mappedBy = "producto")
     private Set<PromocionesHasProductosEntity> promocionesHasProductos;

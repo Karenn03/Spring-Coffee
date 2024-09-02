@@ -15,7 +15,7 @@ public class PromocionesHasProductosEntity {
     private Integer idPromocionesHasPoductos;
 
     @ManyToOne
-    @JoinColumn(name = "Promociones_idPromociones", referencedColumnName = "idPromociones", insertable = false, updatable = false)
+    @JoinColumn(name = "Promociones_idPromociones", nullable = false)
     private PromocionesEntity promocion;
 
     @ManyToOne

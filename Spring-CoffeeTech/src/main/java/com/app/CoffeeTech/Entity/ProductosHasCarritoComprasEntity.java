@@ -19,7 +19,7 @@ public class ProductosHasCarritoComprasEntity {
             @JoinColumn(name = "Productos_idProductos", referencedColumnName = "idProductos", insertable = false, updatable = false),
             @JoinColumn(name = "Productos_TipoProducto_idTipoProducto", referencedColumnName = "TipoProducto_idTipoProducto", insertable = false, updatable = false)
     })
-    private ProductosEntity productos;
+    private ProductosEntity producto;
 
     @ManyToOne
     @JoinColumns({
@@ -45,7 +45,6 @@ public class ProductosHasCarritoComprasEntity {
         private Integer carritoComprasPersonasIdPersonas;
 
         // Getters, Setters, hashCode y equals
-
 
         @Override
         public boolean equals(Object o) {

@@ -19,9 +19,9 @@ public class DomicilioEntity {
 
 
     @OneToOne
-    @JoinColumn(name = "Pedidos_idPedidos", referencedColumnName = "idPedidos")
-    private PedidosEntity pedido;
+    @JoinColumn(name = "Pedidos_idPedidos", nullable = false)
+    private PedidosEntity pedidos;
 
-    // Getters y Setters
+    // Getters and Setters
 
 }

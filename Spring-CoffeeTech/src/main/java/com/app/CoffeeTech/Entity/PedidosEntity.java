@@ -39,6 +39,6 @@ public class PedidosEntity {
     @OneToMany(mappedBy = "pedidos", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PedidosHasProductosEntity> pedidosHasProductos = new ArrayList<>();
 
-    // Getters y Setters
+    // Getters and Setters
 
 }

@@ -1,10 +1,10 @@
 package com.app.CoffeeTech.Repository;
 
-import com.app.CoffeeTech.Entity.DomicilioEntity;
+import com.app.CoffeeTech.Entity.CarritoComprasEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DomicilioRepository extends JpaRepository<DomicilioEntity, Long> {
+public interface CarritoComprasRepository extends JpaRepository<CarritoComprasEntity, Long> {
 
 }

@@ -47,7 +47,7 @@ public class PersonaEntity {
     private List<RolesHasPersonasEntity> rolesHasPersonas;
 
     @OneToOne(mappedBy = "persona")
-    private CarritoComprasEntity carrito;
+    private CarritoComprasEntity carritoCompras;
 
     @OneToMany(mappedBy = "persona")
     private PedidosEntity pedidos;

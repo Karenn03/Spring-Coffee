@@ -1,7 +1,6 @@
 package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
-
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -17,7 +16,7 @@ public class RolesHasPersonasEntity {
 
     @ManyToOne
     @JoinColumn(name = "Roles_idRoles", nullable = false)
-    private RolesEntity roles;
+    private RolesEntity rol;
 
     @ManyToOne
     @JoinColumn(name = "Personas_idPersonas", nullable = false)

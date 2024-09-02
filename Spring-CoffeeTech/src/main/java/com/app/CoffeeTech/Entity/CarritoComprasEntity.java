@@ -18,13 +18,14 @@ public class CarritoComprasEntity implements Serializable {
     private LocalDate fechaAgregado;
 
 
-    @OneToOne(mappedBy = "carritoCompras")
+    @OneToOne
+    @JoinColumn(name = "Personas_idPersonas", nullable = false)
     private PersonaEntity persona;
 
     @OneToMany(mappedBy = "carritoCompras")
     private List<ProductosHasCarritoComprasEntity> productosHasCarritoCompras;
 
-    // Getters y Setters
+    // Getters and Setters
 
     
 }
