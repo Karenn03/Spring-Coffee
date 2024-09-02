@@ -1,4 +1,4 @@
-package Entity;
+package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
@@ -11,8 +11,11 @@ public class PromocionesHasProductosEntity {
     @EmbeddedId
     private PromocionesHasProductosId id;
 
+    @Column(name = "idPromociones_has_Productos")
+    private Integer idPromocionesHasPoductos;
+
     @ManyToOne
-    @JoinColumn(name = "Promociones_idPromociones", insertable = false, updatable = false)
+    @JoinColumn(name = "Promociones_idPromociones", referencedColumnName = "idPromociones", insertable = false, updatable = false)
     private PromocionesEntity promocion;
 
     @ManyToOne
@@ -22,7 +25,6 @@ public class PromocionesHasProductosEntity {
     })
     private ProductosEntity producto;
 
-    // Getters and Setters
 
     @Embeddable
     public static class PromocionesHasProductosId implements Serializable {
@@ -44,8 +46,8 @@ public class PromocionesHasProductosEntity {
             if (o == null || getClass() != o.getClass()) return false;
             PromocionesHasProductosId that = (PromocionesHasProductosId) o;
             return Objects.equals(promocionesIdPromociones, that.promocionesIdPromociones) &&
-                   Objects.equals(productosIdProductos, that.productosIdProductos) &&
-                   Objects.equals(productosTipoProductoIdTipoProducto, that.productosTipoProductoIdTipoProducto);
+                    Objects.equals(productosIdProductos, that.productosIdProductos) &&
+                    Objects.equals(productosTipoProductoIdTipoProducto, that.productosTipoProductoIdTipoProducto);
         }
 
         @Override

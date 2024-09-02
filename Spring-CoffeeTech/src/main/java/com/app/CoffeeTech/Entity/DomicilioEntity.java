@@ -1,4 +1,4 @@
-package Entity;
+package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
 
@@ -19,10 +19,7 @@ public class DomicilioEntity {
 
 
     @OneToOne
-    @JoinColumns({
-            @JoinColumn(name = "Pedidos_idPedidos", referencedColumnName = "idPedidos"),
-            @JoinColumn(name = "Pedidos_Usuario_idUsuario", referencedColumnName = "Usuario_idUsuario")
-    })
+    @JoinColumn(name = "Pedidos_idPedidos", referencedColumnName = "idPedidos")
     private PedidosEntity pedido;
 
     // Getters y Setters

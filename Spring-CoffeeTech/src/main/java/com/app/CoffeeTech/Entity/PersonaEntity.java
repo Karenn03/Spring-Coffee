@@ -1,4 +1,4 @@
-package Entity;
+package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
 import java.util.List;
@@ -14,6 +14,12 @@ public class PersonaEntity {
 
     @Column(name = "documento", nullable = false, length = 20, unique = true)
     private String documento;
+
+    @Column(name = "nombre_usuario", nullable = false, length = 50, unique = true)
+    private String nombreUsuario;
+
+    @Column(name = "contraseña", nullable = false, length = 50)
+    private String contraseña;
 
     @Column(name = "p_nombre", nullable = false, length = 25)
     private String primerNombre;
@@ -34,12 +40,20 @@ public class PersonaEntity {
     private String direccion;
 
 
-    @OneToMany(mappedBy = "personas")
+    @OneToMany(mappedBy = "persona")
     private List<ReservaEntity> reserva;
 
-    @OneToOne
-    @JoinColumn(name = "Usuario_idUsuario", nullable = false)
-    private UsuarioEntity usuario;
+    @OneToMany(mappedBy = "persona")
+    private List<RolesHasPersonasEntity> rolesHasPersonas;
+
+    @OneToOne(mappedBy = "persona")
+    private CarritoComprasEntity carrito;
+
+    @OneToMany(mappedBy = "persona")
+    private PedidosEntity pedidos;
+
+    @OneToMany(mappedBy = "persona")
+    private ReseñasEntity reseñas;
 
     // Getters and Setters
 

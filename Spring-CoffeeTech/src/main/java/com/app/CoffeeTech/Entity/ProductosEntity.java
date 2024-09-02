@@ -1,4 +1,4 @@
-package Entity;
+package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
 import java.util.List;
@@ -28,16 +28,16 @@ public class ProductosEntity {
 
     @ManyToOne
     @JoinColumn(name = "TipoProducto_idTipoProducto", nullable = false)
-    private TipoProductoEntity tipoProducto;
+    private Set<TipoProductoEntity> tipoProducto;
 
     @OneToMany(mappedBy = "producto")
     private Set<ReseñasEntity> reseñas;
 
     @OneToMany(mappedBy = "productos")
-    private Set<ProductosHasCarritoComprasEntity> productosHasCarritoComprasEntities;
+    private Set<ProductosHasCarritoComprasEntity> productosHasCarritoCompras;
 
     @OneToMany(mappedBy = "producto")
-    private List<DetalleVentaEntity> detallesVenta;
+    private List<VentasHasProductosEntity> ventasHasProductos;
 
     @OneToMany(mappedBy = "producto")
     private Set<PedidosHasProductosEntity> pedidoHasProductos;

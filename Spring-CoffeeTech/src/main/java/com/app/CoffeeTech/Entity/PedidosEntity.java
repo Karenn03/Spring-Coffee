@@ -1,4 +1,4 @@
-package Entity;
+package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -30,14 +30,14 @@ public class PedidosEntity {
     private VentasEntity ventas;
 
     @ManyToOne
-    @JoinColumn(name = "Usuario_idUsuario", nullable = false)
-    private UsuarioEntity usuario;
+    @JoinColumn(name = "Personas_idPersonas", nullable = false)
+    private PersonaEntity persona;
 
-    @OneToOne(mappedBy = "pedido")
+    @OneToOne(mappedBy = "pedidos")
     private DomicilioEntity domicilio;
 
-    @OneToMany(mappedBy = "pedidosEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PedidosHasProductosEntity> pedidosHasProductosEntities = new ArrayList<>();
+    @OneToMany(mappedBy = "pedidos", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PedidosHasProductosEntity> pedidosHasProductos = new ArrayList<>();
 
     // Getters y Setters
 

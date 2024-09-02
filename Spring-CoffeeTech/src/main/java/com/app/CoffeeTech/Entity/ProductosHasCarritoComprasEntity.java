@@ -1,4 +1,4 @@
-package Entity;
+package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
@@ -11,8 +11,8 @@ public class ProductosHasCarritoComprasEntity {
     @EmbeddedId
     private ProductosHasCarritoComprasId id;
 
-    @Column(name = "cantidad", nullable = false)
-    private Integer cantidad;
+    @Column(name = "idProductos_has_Carrito_Compras", nullable = false)
+    private Integer idProductosHasCarritoCompras;
 
     @ManyToOne
     @JoinColumns({
@@ -22,10 +22,12 @@ public class ProductosHasCarritoComprasEntity {
     private ProductosEntity productos;
 
     @ManyToOne
-    @JoinColumn(name = "CarritoCompras_idCarritoCompras", referencedColumnName = "idCarritoCompras", insertable = false, updatable = false)
-    private CarritoEntity carritoCompras;
+    @JoinColumns({
+            @JoinColumn(name = "Carrito_Compras_idCarritoCompras", referencedColumnName = "idCarritoCompras", insertable = false, updatable = false),
+            @JoinColumn(name = "Carrito_Compras_Personas_idPersonas", referencedColumnName = "Personas_idPersonas", insertable = false, updatable = false)
+    })
+    private CarritoComprasEntity carritoCompras;
 
-    // Getters and Setters
 
     @Embeddable
     public static class ProductosHasCarritoComprasId implements Serializable {
@@ -36,10 +38,14 @@ public class ProductosHasCarritoComprasEntity {
         @Column(name = "Productos_TipoProducto_idTipoProducto", nullable = false)
         private Integer productosTipoProductoIdTipoProducto;
 
-        @Column(name = "CarritoCompras_idCarritoCompras", nullable = false)
+        @Column(name = "Carrito_Compras_idCarritoCompras", nullable = false)
         private Integer carritoComprasIdCarritoCompras;
 
+        @Column(name = "Carrito_Compras_Personas_idPersonas", nullable = false)
+        private Integer carritoComprasPersonasIdPersonas;
+
         // Getters, Setters, hashCode y equals
+
 
         @Override
         public boolean equals(Object o) {
@@ -47,13 +53,14 @@ public class ProductosHasCarritoComprasEntity {
             if (o == null || getClass() != o.getClass()) return false;
             ProductosHasCarritoComprasId that = (ProductosHasCarritoComprasId) o;
             return Objects.equals(productosIdProductos, that.productosIdProductos) &&
-                   Objects.equals(productosTipoProductoIdTipoProducto, that.productosTipoProductoIdTipoProducto) &&
-                   Objects.equals(carritoComprasIdCarritoCompras, that.carritoComprasIdCarritoCompras);
+                    Objects.equals(productosTipoProductoIdTipoProducto, that.productosTipoProductoIdTipoProducto) &&
+                    Objects.equals(carritoComprasIdCarritoCompras, that.carritoComprasIdCarritoCompras) &&
+                    Objects.equals(carritoComprasPersonasIdPersonas, that.carritoComprasPersonasIdPersonas);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(productosIdProductos, productosTipoProductoIdTipoProducto, carritoComprasIdCarritoCompras);
+            return Objects.hash(productosIdProductos, productosTipoProductoIdTipoProducto, carritoComprasIdCarritoCompras, carritoComprasPersonasIdPersonas);
         }
     }
 }

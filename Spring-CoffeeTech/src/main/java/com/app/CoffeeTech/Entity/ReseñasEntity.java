@@ -1,4 +1,4 @@
-package Entity;
+package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -23,8 +23,8 @@ public class ReseñasEntity {
 
 
     @ManyToOne
-    @JoinColumn(name = "Usuario_idUsuario", referencedColumnName = "idUsuario")
-    private UsuarioEntity usuario;
+    @JoinColumn(name = "Personas_idPersonas", nullable = false)
+    private PersonaEntity persona;
 
     @ManyToOne
     @JoinColumns({

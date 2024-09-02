@@ -1,4 +1,4 @@
-package Entity;
+package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
 import java.util.List;
@@ -21,6 +21,13 @@ public class MesasEntity {
 
     @OneToMany(mappedBy = "mesas")
     private List<PedidosEntity> pedidos;
+
+    @OneToOne
+    @JoinColumns({
+            @JoinColumn(name = "Reserva_idReserva", referencedColumnName = "idReserva"),
+            @JoinColumn(name = "Reserva_Personas_idPersonas", referencedColumnName = "Personas_idPersonas")
+    })
+    private ReservaEntity reserva;
 
     // Getters and Setters
 

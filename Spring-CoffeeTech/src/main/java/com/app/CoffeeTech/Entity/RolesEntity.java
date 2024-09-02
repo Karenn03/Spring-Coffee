@@ -1,4 +1,4 @@
-package Entity;
+package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
 import java.util.List;
@@ -17,7 +17,7 @@ public class RolesEntity {
 
 
     @OneToMany(mappedBy = "rol")
-    private List<UsuarioHasRolesEntity> usuarioHasRoles;
+    private List<RolesHasPersonasEntity> rolesHasPersonas;
 
     // Getters and Setters
 

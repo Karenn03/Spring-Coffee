@@ -1,4 +1,4 @@
-package Entity;
+package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "Carrito_Compras")
-public class CarritoEntity implements Serializable {
+public class CarritoComprasEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,10 +19,10 @@ public class CarritoEntity implements Serializable {
 
 
     @OneToOne(mappedBy = "carritoCompras")
-    private UsuarioEntity usuario;
+    private PersonaEntity persona;
 
     @OneToMany(mappedBy = "carritoCompras")
-    private List<ProductosHasCarritoComprasEntity> productosHasCarritoComprasEntities;
+    private List<ProductosHasCarritoComprasEntity> productosHasCarritoCompras;
 
     // Getters y Setters
 

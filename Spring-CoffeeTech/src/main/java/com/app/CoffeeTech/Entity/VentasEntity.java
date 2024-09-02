@@ -1,4 +1,4 @@
-package Entity;
+package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
@@ -16,12 +16,15 @@ public class VentasEntity {
     @Column(name = "fecha", nullable = false)
     private LocalDate fecha;
 
+    @Column(name = "cantidad", nullable = false)
+    private Integer cantidad;
+
 
     @OneToOne(mappedBy = "ventas")
     private PedidosEntity pedidos;
 
     @OneToMany(mappedBy = "ventas")
-    private List<DetalleVentaEntity> detallesVenta;
+    private List<VentasHasProductosEntity> ventasHasProductos;
 
     // Getters y Setters
 
