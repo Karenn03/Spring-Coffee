@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class ReseñaDTO {
+public class ReseñasDTO {
     private Integer idReseñas;
     private Integer calificacion;
     private String comentario;

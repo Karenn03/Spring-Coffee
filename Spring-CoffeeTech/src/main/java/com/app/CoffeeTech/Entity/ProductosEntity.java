@@ -33,7 +33,7 @@ public class ProductosEntity {
 
     @ManyToOne
     @JoinColumn(name = "TipoProducto_idTipoProducto", nullable = false)
-    private Set<TipoProductoEntity> tipoProducto;
+    private TipoProductoEntity tipoProducto;
 
     @OneToMany(mappedBy = "producto")
     private Set<ReseñasEntity> reseñas;
