@@ -15,32 +15,32 @@ public class ReservaService implements IDAO<ReservaEntity, Long> {
     ReservaRepository reservaRepository;
 
     @Override
-    public void create(ReservaEntity entidad) {
-
-    }
-
-    @Override
-    public ReservaEntity buscarPorId(Long aLong) {
-        return null;
-    }
-
-    @Override
-    public List<ReservaEntity> buscarTodos() {
+    public List<ReservaEntity> findAll() {
         return List.of();
     }
 
     @Override
-    public void guardar(ReservaEntity entidad) {
-
+    public ReservaEntity getById(Long aLong) {
+        return null;
     }
 
     @Override
-    public void actualizar(ReservaEntity entidad) {
-
+    public void update(ReservaEntity entity) {
+        this.reservaRepository.save(entity);
     }
 
     @Override
-    public void eliminar(Long aLong) {
+    public ReservaEntity save(ReservaEntity entity) {
+        return this.reservaRepository.save(entity);
+    }
 
+    @Override
+    public void delete(ReservaEntity entity) {
+        this.reservaRepository.delete(entity);
+    }
+
+    @Override
+    public void create(ReservaEntity entity) {
+        this.reservaRepository.save(entity);
     }
 }

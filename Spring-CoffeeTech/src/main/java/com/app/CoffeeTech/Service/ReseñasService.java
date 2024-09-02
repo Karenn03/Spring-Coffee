@@ -1,6 +1,5 @@
 package com.app.CoffeeTech.Service;
 
-
 import com.app.CoffeeTech.Entity.ReseñasEntity;
 import com.app.CoffeeTech.Repository.ReseñasRepository;
 import com.app.CoffeeTech.Service.DAO.IDAO;
@@ -16,32 +15,32 @@ public class ReseñasService implements IDAO<ReseñasEntity, Long> {
     ReseñasRepository reseñasRepository;
 
     @Override
-    public void create(ReseñasEntity entidad) {
-
-    }
-
-    @Override
-    public ReseñasEntity buscarPorId(Long aLong) {
-        return null;
-    }
-
-    @Override
-    public List<ReseñasEntity> buscarTodos() {
+    public List<ReseñasEntity> findAll() {
         return List.of();
     }
 
     @Override
-    public void guardar(ReseñasEntity entidad) {
-
+    public ReseñasEntity getById(Long aLong) {
+        return null;
     }
 
     @Override
-    public void actualizar(ReseñasEntity entidad) {
-
+    public void update(ReseñasEntity entity) {
+        this.reseñasRepository.save(entity);
     }
 
     @Override
-    public void eliminar(Long aLong) {
+    public ReseñasEntity save(ReseñasEntity entity) {
+        return this.reseñasRepository.save(entity);
+    }
 
+    @Override
+    public void delete(ReseñasEntity entity) {
+        this.reseñasRepository.delete(entity);
+    }
+
+    @Override
+    public void create(ReseñasEntity entity) {
+        this.reseñasRepository.save(entity);
     }
 }

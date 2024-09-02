@@ -15,32 +15,32 @@ public class TipoProductoService implements IDAO<TipoProductoEntity, Long> {
     TipoProductoRepository tipoProductoRepository;
 
     @Override
-    public void create(TipoProductoEntity entidad) {
-
-    }
-
-    @Override
-    public TipoProductoEntity buscarPorId(Long aLong) {
-        return null;
-    }
-
-    @Override
-    public List<TipoProductoEntity> buscarTodos() {
+    public List<TipoProductoEntity> findAll() {
         return List.of();
     }
 
     @Override
-    public void guardar(TipoProductoEntity entidad) {
-
+    public TipoProductoEntity getById(Long aLong) {
+        return null;
     }
 
     @Override
-    public void actualizar(TipoProductoEntity entidad) {
-
+    public void update(TipoProductoEntity entity) {
+        this.tipoProductoRepository.save(entity);
     }
 
     @Override
-    public void eliminar(Long aLong) {
+    public TipoProductoEntity save(TipoProductoEntity entity) {
+        return this.tipoProductoRepository.save(entity);
+    }
 
+    @Override
+    public void delete(TipoProductoEntity entity) {
+        this.tipoProductoRepository.delete(entity);
+    }
+
+    @Override
+    public void create(TipoProductoEntity entity) {
+        this.tipoProductoRepository.save(entity);
     }
 }

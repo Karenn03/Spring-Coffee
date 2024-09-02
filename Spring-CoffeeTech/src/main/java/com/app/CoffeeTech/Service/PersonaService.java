@@ -15,32 +15,32 @@ public class PersonaService implements IDAO<PersonaEntity, Long> {
     PersonaRepository personaRepository;
 
     @Override
-    public void create(PersonaEntity entidad) {
-
-    }
-
-    @Override
-    public PersonaEntity buscarPorId(Long aLong) {
-        return null;
-    }
-
-    @Override
-    public List<PersonaEntity> buscarTodos() {
+    public List<PersonaEntity> findAll() {
         return List.of();
     }
 
     @Override
-    public void guardar(PersonaEntity entidad) {
-
+    public PersonaEntity getById(Long aLong) {
+        return null;
     }
 
     @Override
-    public void actualizar(PersonaEntity entidad) {
-
+    public void update(PersonaEntity entity) {
+        this.personaRepository.save(entity);
     }
 
     @Override
-    public void eliminar(Long aLong) {
+    public PersonaEntity save(PersonaEntity entity) {
+        return this.personaRepository.save(entity);
+    }
 
+    @Override
+    public void delete(PersonaEntity entity) {
+        this.personaRepository.delete(entity);
+    }
+
+    @Override
+    public void create(PersonaEntity entity) {
+        this.personaRepository.save(entity);
     }
 }

@@ -15,32 +15,32 @@ public class PromocionesService implements IDAO<PromocionesEntity, Long> {
     PromocionesRespository promocionesRespository;
 
     @Override
-    public void create(PromocionesEntity entidad) {
-
-    }
-
-    @Override
-    public PromocionesEntity buscarPorId(Long aLong) {
-        return null;
-    }
-
-    @Override
-    public List<PromocionesEntity> buscarTodos() {
+    public List<PromocionesEntity> findAll() {
         return List.of();
     }
 
     @Override
-    public void guardar(PromocionesEntity entidad) {
-
+    public PromocionesEntity getById(Long aLong) {
+        return null;
     }
 
     @Override
-    public void actualizar(PromocionesEntity entidad) {
-
+    public void update(PromocionesEntity entity) {
+        this.promocionesRespository.save(entity);
     }
 
     @Override
-    public void eliminar(Long aLong) {
+    public PromocionesEntity save(PromocionesEntity entity) {
+        return this.promocionesRespository.save(entity);
+    }
 
+    @Override
+    public void delete(PromocionesEntity entity) {
+        this.promocionesRespository.delete(entity);
+    }
+
+    @Override
+    public void create(PromocionesEntity entity) {
+        this.promocionesRespository.save(entity);
     }
 }

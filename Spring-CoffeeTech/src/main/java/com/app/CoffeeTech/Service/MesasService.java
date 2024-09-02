@@ -15,32 +15,32 @@ public class MesasService implements IDAO<MesasEntity, Long> {
     MesasRepository mesasRepository;
 
     @Override
-    public void create(MesasEntity entidad) {
-
-    }
-
-    @Override
-    public MesasEntity buscarPorId(Long aLong) {
-        return null;
-    }
-
-    @Override
-    public List<MesasEntity> buscarTodos() {
+    public List<MesasEntity> findAll() {
         return List.of();
     }
 
     @Override
-    public void guardar(MesasEntity entidad) {
-
+    public MesasEntity getById(Long aLong) {
+        return null;
     }
 
     @Override
-    public void actualizar(MesasEntity entidad) {
-
+    public void update(MesasEntity entity) {
+        this.mesasRepository.save(entity);
     }
 
     @Override
-    public void eliminar(Long aLong) {
+    public MesasEntity save(MesasEntity entity) {
+        return this.mesasRepository.save(entity);
+    }
 
+    @Override
+    public void delete(MesasEntity entity) {
+        this.mesasRepository.delete(entity);
+    }
+
+    @Override
+    public void create(MesasEntity entity) {
+        this.mesasRepository.save(entity);
     }
 }

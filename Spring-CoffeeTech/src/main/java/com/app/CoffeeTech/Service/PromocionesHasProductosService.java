@@ -15,32 +15,32 @@ public class PromocionesHasProductosService implements IDAO<PromocionesHasProduc
     PromocionesHasProductosRepository promocionesHasProductosRepository;
 
     @Override
-    public void create(PromocionesHasProductosEntity entidad) {
-
-    }
-
-    @Override
-    public PromocionesHasProductosEntity buscarPorId(Long aLong) {
-        return null;
-    }
-
-    @Override
-    public List<PromocionesHasProductosEntity> buscarTodos() {
+    public List<PromocionesHasProductosEntity> findAll() {
         return List.of();
     }
 
     @Override
-    public void guardar(PromocionesHasProductosEntity entidad) {
-
+    public PromocionesHasProductosEntity getById(Long aLong) {
+        return null;
     }
 
     @Override
-    public void actualizar(PromocionesHasProductosEntity entidad) {
-
+    public void update(PromocionesHasProductosEntity entity) {
+        this.promocionesHasProductosRepository.save(entity);
     }
 
     @Override
-    public void eliminar(Long aLong) {
+    public PromocionesHasProductosEntity save(PromocionesHasProductosEntity entity) {
+        return this.promocionesHasProductosRepository.save(entity);
+    }
 
+    @Override
+    public void delete(PromocionesHasProductosEntity entity) {
+        this.promocionesHasProductosRepository.delete(entity);
+    }
+
+    @Override
+    public void create(PromocionesHasProductosEntity entity) {
+        this.promocionesHasProductosRepository.save(entity);
     }
 }

@@ -15,32 +15,32 @@ public class VentasService implements IDAO<VentasEntity, Long> {
     VentasRepository ventasRepository;
 
     @Override
-    public void create(VentasEntity entidad) {
-
-    }
-
-    @Override
-    public VentasEntity buscarPorId(Long aLong) {
-        return null;
-    }
-
-    @Override
-    public List<VentasEntity> buscarTodos() {
+    public List<VentasEntity> findAll() {
         return List.of();
     }
 
     @Override
-    public void guardar(VentasEntity entidad) {
-
+    public VentasEntity getById(Long aLong) {
+        return null;
     }
 
     @Override
-    public void actualizar(VentasEntity entidad) {
-
+    public void update(VentasEntity entity) {
+        this.ventasRepository.save(entity);
     }
 
     @Override
-    public void eliminar(Long aLong) {
+    public VentasEntity save(VentasEntity entity) {
+        return this.ventasRepository.save(entity);
+    }
 
+    @Override
+    public void delete(VentasEntity entity) {
+        this.ventasRepository.delete(entity);
+    }
+
+    @Override
+    public void create(VentasEntity entity) {
+        this.ventasRepository.save(entity);
     }
 }

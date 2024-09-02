@@ -15,32 +15,32 @@ public class ProductosHasCarritoComprasService implements IDAO<ProductosHasCarri
     ProductosHasCarritoComprasRepository productosHasCarritoComprasRepository;
 
     @Override
-    public void create(ProductosHasCarritoComprasEntity entidad) {
-
-    }
-
-    @Override
-    public ProductosHasCarritoComprasEntity buscarPorId(Long aLong) {
-        return null;
-    }
-
-    @Override
-    public List<ProductosHasCarritoComprasEntity> buscarTodos() {
+    public List<ProductosHasCarritoComprasEntity> findAll() {
         return List.of();
     }
 
     @Override
-    public void guardar(ProductosHasCarritoComprasEntity entidad) {
-
+    public ProductosHasCarritoComprasEntity getById(Long aLong) {
+        return null;
     }
 
     @Override
-    public void actualizar(ProductosHasCarritoComprasEntity entidad) {
-
+    public void update(ProductosHasCarritoComprasEntity entity) {
+        this.productosHasCarritoComprasRepository.save(entity);
     }
 
     @Override
-    public void eliminar(Long aLong) {
+    public ProductosHasCarritoComprasEntity save(ProductosHasCarritoComprasEntity entity) {
+        return this.productosHasCarritoComprasRepository.save(entity);
+    }
 
+    @Override
+    public void delete(ProductosHasCarritoComprasEntity entity) {
+        this.productosHasCarritoComprasRepository.delete(entity);
+    }
+
+    @Override
+    public void create(ProductosHasCarritoComprasEntity entity) {
+        this.productosHasCarritoComprasRepository.save(entity);
     }
 }

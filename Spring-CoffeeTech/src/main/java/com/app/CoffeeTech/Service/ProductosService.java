@@ -15,32 +15,32 @@ public class ProductosService implements IDAO<ProductosEntity, Long> {
     ProductosRepository productosRepository;
 
     @Override
-    public void create(ProductosEntity entidad) {
-
-    }
-
-    @Override
-    public ProductosEntity buscarPorId(Long aLong) {
-        return null;
-    }
-
-    @Override
-    public List<ProductosEntity> buscarTodos() {
+    public List<ProductosEntity> findAll() {
         return List.of();
     }
 
     @Override
-    public void guardar(ProductosEntity entidad) {
-
+    public ProductosEntity getById(Long aLong) {
+        return null;
     }
 
     @Override
-    public void actualizar(ProductosEntity entidad) {
-
+    public void update(ProductosEntity entity) {
+        this.productosRepository.save(entity);
     }
 
     @Override
-    public void eliminar(Long aLong) {
+    public ProductosEntity save(ProductosEntity entity) {
+        return this.productosRepository.save(entity);
+    }
 
+    @Override
+    public void delete(ProductosEntity entity) {
+        this.productosRepository.delete(entity);
+    }
+
+    @Override
+    public void create(ProductosEntity entity) {
+        this.productosRepository.save(entity);
     }
 }

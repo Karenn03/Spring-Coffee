@@ -15,32 +15,32 @@ public class VentasHasProductosService implements IDAO<VentasHasProductosEntity,
     VentasHasProductosRepository ventasHasProductosRepository;
 
     @Override
-    public void create(VentasHasProductosEntity entidad) {
-
-    }
-
-    @Override
-    public VentasHasProductosEntity buscarPorId(Long aLong) {
-        return null;
-    }
-
-    @Override
-    public List<VentasHasProductosEntity> buscarTodos() {
+    public List<VentasHasProductosEntity> findAll() {
         return List.of();
     }
 
     @Override
-    public void guardar(VentasHasProductosEntity entidad) {
-
+    public VentasHasProductosEntity getById(Long aLong) {
+        return null;
     }
 
     @Override
-    public void actualizar(VentasHasProductosEntity entidad) {
-
+    public void update(VentasHasProductosEntity entity) {
+        this.ventasHasProductosRepository.save(entity);
     }
 
     @Override
-    public void eliminar(Long aLong) {
+    public VentasHasProductosEntity save(VentasHasProductosEntity entity) {
+        return this.ventasHasProductosRepository.save(entity);
+    }
 
+    @Override
+    public void delete(VentasHasProductosEntity entity) {
+        this.ventasHasProductosRepository.delete(entity);
+    }
+
+    @Override
+    public void create(VentasHasProductosEntity entity) {
+        this.ventasHasProductosRepository.save(entity);
     }
 }

@@ -1,6 +1,5 @@
 package com.app.CoffeeTech.Service;
 
-
 import com.app.CoffeeTech.Entity.PedidosEntity;
 import com.app.CoffeeTech.Repository.PedidosRepository;
 import com.app.CoffeeTech.Service.DAO.IDAO;
@@ -16,32 +15,32 @@ public class PedidosService implements IDAO<PedidosEntity, Long> {
     PedidosRepository pedidosRepository;
 
     @Override
-    public void create(PedidosEntity entidad) {
-
-    }
-
-    @Override
-    public PedidosEntity buscarPorId(Long aLong) {
-        return null;
-    }
-
-    @Override
-    public List<PedidosEntity> buscarTodos() {
+    public List<PedidosEntity> findAll() {
         return List.of();
     }
 
     @Override
-    public void guardar(PedidosEntity entidad) {
-
+    public PedidosEntity getById(Long aLong) {
+        return null;
     }
 
     @Override
-    public void actualizar(PedidosEntity entidad) {
-
+    public void update(PedidosEntity entity) {
+        this.pedidosRepository.save(entity);
     }
 
     @Override
-    public void eliminar(Long aLong) {
+    public PedidosEntity save(PedidosEntity entity) {
+        return this.pedidosRepository.save(entity);
+    }
 
+    @Override
+    public void delete(PedidosEntity entity) {
+        this.pedidosRepository.delete(entity);
+    }
+
+    @Override
+    public void create(PedidosEntity entity) {
+        this.pedidosRepository.save(entity);
     }
 }

@@ -15,32 +15,32 @@ public class RolesService implements IDAO<RolesEntity, Long> {
     RolesRepository rolesRepository;
 
     @Override
-    public void create(RolesEntity entidad) {
-
-    }
-
-    @Override
-    public RolesEntity buscarPorId(Long aLong) {
-        return null;
-    }
-
-    @Override
-    public List<RolesEntity> buscarTodos() {
+    public List<RolesEntity> findAll() {
         return List.of();
     }
 
     @Override
-    public void guardar(RolesEntity entidad) {
-
+    public RolesEntity getById(Long aLong) {
+        return null;
     }
 
     @Override
-    public void actualizar(RolesEntity entidad) {
-
+    public void update(RolesEntity entity) {
+        this.rolesRepository.save(entity);
     }
 
     @Override
-    public void eliminar(Long aLong) {
+    public RolesEntity save(RolesEntity entity) {
+        return this.rolesRepository.save(entity);
+    }
 
+    @Override
+    public void delete(RolesEntity entity) {
+        this.rolesRepository.delete(entity);
+    }
+
+    @Override
+    public void create(RolesEntity entity) {
+        this.rolesRepository.save(entity);
     }
 }

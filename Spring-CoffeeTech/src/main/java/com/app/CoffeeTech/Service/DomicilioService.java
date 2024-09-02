@@ -15,32 +15,32 @@ public class DomicilioService implements IDAO<DomicilioEntity, Long> {
     DomicilioRepository domicilioRepository;
 
     @Override
-    public void create(DomicilioEntity entidad) {
-
-    }
-
-    @Override
-    public DomicilioEntity buscarPorId(Long aLong) {
-        return null;
-    }
-
-    @Override
-    public List<DomicilioEntity> buscarTodos() {
+    public List<DomicilioEntity> findAll() {
         return List.of();
     }
 
     @Override
-    public void guardar(DomicilioEntity entidad) {
-
+    public DomicilioEntity getById(Long aLong) {
+        return null;
     }
 
     @Override
-    public void actualizar(DomicilioEntity entidad) {
-
+    public void update(DomicilioEntity entity) {
+        this.domicilioRepository.save(entity);
     }
 
     @Override
-    public void eliminar(Long aLong) {
+    public DomicilioEntity save(DomicilioEntity entity) {
+        return this.domicilioRepository.save(entity);
+    }
 
+    @Override
+    public void delete(DomicilioEntity entity) {
+        this.domicilioRepository.delete(entity);
+    }
+
+    @Override
+    public void create(DomicilioEntity entity) {
+        this.domicilioRepository.save(entity);
     }
 }

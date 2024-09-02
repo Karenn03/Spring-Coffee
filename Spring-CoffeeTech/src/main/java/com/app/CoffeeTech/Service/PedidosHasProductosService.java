@@ -1,6 +1,5 @@
 package com.app.CoffeeTech.Service;
 
-
 import com.app.CoffeeTech.Entity.PedidosHasProductosEntity;
 import com.app.CoffeeTech.Repository.PedidosHasProductosRepository;
 import com.app.CoffeeTech.Service.DAO.IDAO;
@@ -16,32 +15,32 @@ public class PedidosHasProductosService implements IDAO<PedidosHasProductosEntit
     PedidosHasProductosRepository pedidosHasProductosRepository;
 
     @Override
-    public void create(PedidosHasProductosEntity entidad) {
-
-    }
-
-    @Override
-    public PedidosHasProductosEntity buscarPorId(Long aLong) {
-        return null;
-    }
-
-    @Override
-    public List<PedidosHasProductosEntity> buscarTodos() {
+    public List<PedidosHasProductosEntity> findAll() {
         return List.of();
     }
 
     @Override
-    public void guardar(PedidosHasProductosEntity entidad) {
-
+    public PedidosHasProductosEntity getById(Long aLong) {
+        return null;
     }
 
     @Override
-    public void actualizar(PedidosHasProductosEntity entidad) {
-
+    public void update(PedidosHasProductosEntity entity) {
+        this.pedidosHasProductosRepository.save(entity);
     }
 
     @Override
-    public void eliminar(Long aLong) {
+    public PedidosHasProductosEntity save(PedidosHasProductosEntity entity) {
+        return this.pedidosHasProductosRepository.save(entity);
+    }
 
+    @Override
+    public void delete(PedidosHasProductosEntity entity) {
+        this.pedidosHasProductosRepository.delete(entity);
+    }
+
+    @Override
+    public void create(PedidosHasProductosEntity entity) {
+        this.pedidosHasProductosRepository.save(entity);
     }
 }
