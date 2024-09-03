@@ -30,10 +30,10 @@ public class ReservaEntity {
 
 
     @ManyToOne
-    @JoinColumn(name = "Personas_idPersonas", nullable = false)
+    @JoinColumn(name = "persona_id", nullable = false) // Nombre de columna en la tabla 'reserva'
     private PersonaEntity persona;
 
-    @OneToOne(mappedBy = "reserva")
+    @OneToMany(mappedBy = "reserva")
     private List<MesasEntity> mesas;
 
 }

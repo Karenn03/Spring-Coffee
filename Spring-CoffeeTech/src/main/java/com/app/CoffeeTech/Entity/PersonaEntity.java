@@ -46,7 +46,7 @@ public class PersonaEntity {
 
 
     @OneToMany(mappedBy = "persona")
-    private List<ReservaEntity> reserva;
+    private List<ReservaEntity> reservas;
 
     @OneToMany(mappedBy = "persona")
     private List<RolesHasPersonasEntity> rolesHasPersonas;
@@ -55,9 +55,8 @@ public class PersonaEntity {
     private CarritoComprasEntity carritoCompras;
 
     @OneToMany(mappedBy = "persona")
-    private PedidosEntity pedidos;
+    private List<PedidosEntity> pedidos;
 
     @OneToMany(mappedBy = "persona")
-    private ReseñasEntity reseñas;
-
+    private List<ReseñasEntity> reseñas;
 }
