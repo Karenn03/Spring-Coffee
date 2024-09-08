@@ -3,7 +3,6 @@ package com.app.CoffeeTech.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -11,46 +10,19 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "Roles_has_Personas")
-public class RolesHasPersonasEntity {
+public class RolesHasPersonasEntity implements Serializable {
 
-    @EmbeddedId
-    private RolesHasPersonasId id;
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idRoles_has_Personas")
-    private Integer idRolesHasPersonas;
+    private Long idRolesHasPersonas;
 
     @ManyToOne
-    @JoinColumn(name = "Roles_idRoles", nullable = false)
-    private RolesEntity rol;
-
-    @ManyToOne
-    @JoinColumn(name = "Personas_idPersonas", nullable = false)
+    @JoinColumn(name = "idPersonas", nullable = false)
     private PersonaEntity persona;
 
+    @ManyToOne
+    @JoinColumn(name = "idRoles", nullable = false)
+    private RolesEntity rol;
 
-    @Embeddable
-    public static class RolesHasPersonasId implements Serializable {
-
-        @Column(name = "Roles_idRoles")
-        private Integer rolesIdRoles;
-
-        @Column(name = "Personas_idPersonas")
-        private Integer personasIdPersonas;
-
-        // Getters, Setters, hashCode y equals
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            RolesHasPersonasId that = (RolesHasPersonasId) o;
-            return Objects.equals(rolesIdRoles, that.rolesIdRoles) &&
-                    Objects.equals(personasIdPersonas, that.personasIdPersonas);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(rolesIdRoles, personasIdPersonas);
-        }
-    }
 }

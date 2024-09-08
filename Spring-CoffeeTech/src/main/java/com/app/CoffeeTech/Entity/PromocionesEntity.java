@@ -3,7 +3,7 @@ package com.app.CoffeeTech.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Getter
@@ -16,13 +16,13 @@ public class PromocionesEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idPromociones")
-    private Integer idPromociones;
+    private Long idPromociones;
 
     @Column(name = "nombre_promo", nullable = false, length = 100)
     private String nombrePromo;
 
-    @Column(name = "descripcion", nullable = false, length = 200)
-    private String descripcion;
+    @Column(name = "descripcion_promo", nullable = false, length = 200)
+    private String descripcionPromo;
 
     @Column(name = "fecha_inicio", nullable = false, length = 20)
     private LocalDateTime fechaInicio;
@@ -30,8 +30,8 @@ public class PromocionesEntity {
     @Column(name = "fecha_final", nullable = false, length = 20)
     private LocalDateTime fechaFinal;
 
-    @Column(name = "tipo_descuento", nullable = false, length = 50)
-    private String tipoDescuento;
+    @Enumerated(EnumType.STRING)
+    private TipoDescuento tipo_descuento;
 
     @Column(name = "valor_descuento", nullable = false)
     private Double valorDescuento;
@@ -39,15 +39,19 @@ public class PromocionesEntity {
     @Enumerated(EnumType.STRING)
     private EstadoPromocion estado;
 
+    public enum TipoDescuento {
+        Descuento_por_Cantidad,
+        Descuento_por_Temporada,
+        Descuento_por_Fidelidad,
+        Descuento_de_Lanzamiento,
+        Descuento_por_Compra_Mínima
+    }
+
     public enum EstadoPromocion {
         activa,
         inactiva,
         programada,
         suspendida
     }
-
-
-    @OneToMany(mappedBy = "promocion")
-    private Set<PromocionesHasProductosEntity> promocionesHasProductos;
 
 }

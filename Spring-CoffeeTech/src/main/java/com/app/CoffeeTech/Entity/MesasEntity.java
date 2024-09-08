@@ -2,6 +2,7 @@ package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -10,28 +11,17 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "Mesas")
-public class MesasEntity {
+public class MesasEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idMesas")
-    private Integer idMesas;
-
-    @Column(name = "numero_mesa", nullable = false)
-    private Integer numeroMesa;
+    private Long idMesas;
 
     @Column(name = "capacidad", nullable = false)
-    private Integer capacidad;
+    private Long capacidad;
 
-
-    @OneToMany(mappedBy = "mesas")
-    private List<PedidosEntity> pedidos;
-
-    @OneToOne
-    @JoinColumns({
-            @JoinColumn(name = "Reserva_idReserva", referencedColumnName = "idReserva"),
-            @JoinColumn(name = "Reserva_Personas_idPersonas", referencedColumnName = "Personas_idPersonas")
-    })
+    @OneToOne(mappedBy = "mesas")
     private ReservaEntity reserva;
 
 }

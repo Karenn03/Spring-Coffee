@@ -2,6 +2,7 @@ package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.io.Serializable;
 
 @Entity
 @Getter
@@ -9,12 +10,12 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "Domicilio")
-public class DomicilioEntity {
+public class DomicilioEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idDomicilio")
-    private Integer idDomicilio;
+    private Long idDomicilio;
 
     @Column(name = "direccion", nullable = false, length = 120)
     private String direccion;
@@ -22,9 +23,8 @@ public class DomicilioEntity {
     @Column(name = "especificaciones", nullable = false, length = 250)
     private String especificaciones;
 
-
     @OneToOne
-    @JoinColumn(name = "Pedidos_idPedidos", nullable = false)
+    @JoinColumn(name = "idPedidos")
     private PedidosEntity pedidos;
 
 }

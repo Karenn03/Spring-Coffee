@@ -2,7 +2,7 @@ package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.util.List;
+import java.io.Serializable;
 
 @Entity
 @Getter
@@ -10,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "Tipo_Producto")
-public class TipoProductoEntity {
+public class TipoProductoEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,9 +19,5 @@ public class TipoProductoEntity {
 
     @Column(name = "nombre_tipo_prod", nullable = false, length = 100)
     private String nombreTipoProd;
-
-
-    @OneToMany(mappedBy = "tipoProducto")
-    private List<ProductosEntity> productos;
 
 }

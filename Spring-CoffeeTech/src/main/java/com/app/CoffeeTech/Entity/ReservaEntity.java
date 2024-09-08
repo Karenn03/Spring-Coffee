@@ -2,9 +2,9 @@ package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
 @Entity
 @Getter
@@ -12,12 +12,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "Reserva")
-public class ReservaEntity {
+public class ReservaEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idReserva")
-    private Integer idReserva;
+    private Long idReserva;
 
     @Column(name = "fecha", nullable = false)
     private LocalDate fecha;
@@ -28,12 +28,12 @@ public class ReservaEntity {
     @Column(name = "cantidad_personas", nullable = false)
     private Integer cantidadPersonas;
 
-
     @ManyToOne
-    @JoinColumn(name = "persona_id", nullable = false) // Nombre de columna en la tabla 'reserva'
+    @JoinColumn(name = "idPersonas")
     private PersonaEntity persona;
 
-    @OneToMany(mappedBy = "reserva")
-    private List<MesasEntity> mesas;
+    @OneToOne
+    @JoinColumn(name = "idMesas")
+    private MesasEntity mesas;
 
 }

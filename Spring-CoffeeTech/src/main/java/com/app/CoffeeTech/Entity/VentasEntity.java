@@ -2,8 +2,8 @@ package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Getter
@@ -11,24 +11,20 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "Ventas")
-public class VentasEntity {
+public class VentasEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idVentas")
-    private Integer idVentas;
+    private Long idVentas;
 
     @Column(name = "fecha", nullable = false)
     private LocalDate fecha;
 
     @Column(name = "cantidad", nullable = false)
-    private Integer cantidad;
-
+    private Long cantidad;
 
     @OneToOne(mappedBy = "ventas")
     private PedidosEntity pedidos;
-
-    @OneToMany(mappedBy = "ventas")
-    private List<VentasHasProductosEntity> ventasHasProductos;
 
 }

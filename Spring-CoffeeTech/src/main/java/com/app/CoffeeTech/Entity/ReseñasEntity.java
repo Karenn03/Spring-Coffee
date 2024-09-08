@@ -2,6 +2,7 @@ package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
@@ -10,15 +11,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "Reseñas")
-public class ReseñasEntity {
+public class ReseñasEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idReseñas")
-    private Integer idReseñas;
+    private Long idReseñas;
 
     @Column(name = "calificacion", nullable = false)
-    private Integer calificacion;
+    private Long calificacion;
 
     @Column(name = "comentario", nullable = false, length = 200)
     private String comentario;
@@ -26,15 +27,14 @@ public class ReseñasEntity {
     @Column(name = "fecha_reseña", nullable = false, length = 20)
     private LocalDateTime fechaReseña;
 
-
     @ManyToOne
-    @JoinColumn(name = "Personas_idPersonas", nullable = false)
+    @JoinColumn(name = "idPersonas", nullable = false)
     private PersonaEntity persona;
 
     @ManyToOne
     @JoinColumns({
-            @JoinColumn(name = "Productos_idProductos", referencedColumnName = "idProductos"),
-            @JoinColumn(name = "Productos_TipoProducto_idTipoProducto", referencedColumnName = "TipoProducto_idTipoProducto")
+            @JoinColumn(name = "idProductos", referencedColumnName = "idProductos"),
+            @JoinColumn(name = "idTipoProducto", referencedColumnName = "idTipoProducto")
     })
     private ProductosEntity producto;
 
