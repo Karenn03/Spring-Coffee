@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PedidosHasProductosService implements IDAO<PedidosHasProductosEntity, Long> {
@@ -16,12 +17,13 @@ public class PedidosHasProductosService implements IDAO<PedidosHasProductosEntit
 
     @Override
     public List<PedidosHasProductosEntity> findAll() {
-        return List.of();
+        return pedidosHasProductosRepository.findAll();
     }
 
     @Override
-    public PedidosHasProductosEntity getById(Long aLong) {
-        return null;
+    public PedidosHasProductosEntity getById(Long id) {
+        Optional<PedidosHasProductosEntity> optionalTable = pedidosHasProductosRepository.findById(id);
+        return optionalTable.orElse(null);
     }
 
     @Override

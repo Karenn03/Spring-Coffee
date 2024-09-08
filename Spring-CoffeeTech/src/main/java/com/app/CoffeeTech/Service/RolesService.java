@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RolesService implements IDAO<RolesEntity, Long> {
@@ -16,12 +17,13 @@ public class RolesService implements IDAO<RolesEntity, Long> {
 
     @Override
     public List<RolesEntity> findAll() {
-        return List.of();
+        return rolesRepository.findAll();
     }
 
     @Override
-    public RolesEntity getById(Long aLong) {
-        return null;
+    public RolesEntity getById(Long id) {
+        Optional<RolesEntity> optionalRoles = rolesRepository.findById(id);
+        return optionalRoles.orElse(null);
     }
 
     @Override
@@ -36,11 +38,15 @@ public class RolesService implements IDAO<RolesEntity, Long> {
 
     @Override
     public void delete(RolesEntity entity) {
-        this.rolesRepository.delete(entity);
+        rolesRepository.delete(entity);
     }
 
     @Override
     public void create(RolesEntity entity) {
         this.rolesRepository.save(entity);
+    }
+
+    public RolesEntity findByRolName(String nombreRol) {
+        return rolesRepository.findByRolName(nombreRol);
     }
 }

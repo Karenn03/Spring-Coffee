@@ -26,7 +26,7 @@ public class ReservaEntity implements Serializable {
     private LocalTime hora;
 
     @Column(name = "cantidad_personas", nullable = false)
-    private Integer cantidadPersonas;
+    private Long cantidadPersonas;
 
     @ManyToOne
     @JoinColumn(name = "idPersonas")

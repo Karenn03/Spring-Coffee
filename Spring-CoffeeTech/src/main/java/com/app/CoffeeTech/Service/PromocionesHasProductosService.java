@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PromocionesHasProductosService implements IDAO<PromocionesHasProductosEntity, Long> {
@@ -16,12 +17,13 @@ public class PromocionesHasProductosService implements IDAO<PromocionesHasProduc
 
     @Override
     public List<PromocionesHasProductosEntity> findAll() {
-        return List.of();
+        return promocionesHasProductosRepository.findAll();
     }
 
     @Override
-    public PromocionesHasProductosEntity getById(Long aLong) {
-        return null;
+    public PromocionesHasProductosEntity getById(Long id) {
+        Optional<PromocionesHasProductosEntity> optionalProducts = promocionesHasProductosRepository.findById(id);
+        return optionalProducts.orElse(null);
     }
 
     @Override

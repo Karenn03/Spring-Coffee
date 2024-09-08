@@ -4,8 +4,10 @@ import lombok.*;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class DomicilioDTO {
-    private Integer idDomicilio;
+    private Long idDomicilio;
     private String direccion;
     private String especificaciones;
+    private Long idPedidos;
 }

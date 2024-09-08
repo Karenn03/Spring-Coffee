@@ -1,25 +1,20 @@
 package com.app.CoffeeTech.DTO;
 
+import com.app.CoffeeTech.Entity.PromocionesEntity;
 import lombok.*;
 import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class PromocionesDTO {
-    private Integer idPromociones;
+    private Long idPromociones;
     private String nombrePromo;
-    private String descripcion;
+    private String descripcionPromo;
     private LocalDateTime fechaInicio;
     private LocalDateTime fechaFinal;
-    private String tipoDescuento;
+    private PromocionesEntity.TipoDescuento tipoDescuento;
     private Double valorDescuento;
-    private EstadoPromocion estado;
-
-    public enum EstadoPromocion {
-        activa,
-        inactiva,
-        programada,
-        suspendida
-    }
+    private PromocionesEntity.EstadoPromocion estado;
 
 }

@@ -3,7 +3,6 @@ package com.app.CoffeeTech.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
-import java.util.List;
 
 @Entity
 @Getter

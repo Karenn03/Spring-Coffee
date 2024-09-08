@@ -4,8 +4,9 @@ import lombok.*;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class RolesHasPersonasDTO {
-    private Integer idRolesHasPersonas;
-    private Integer rolesIdRoles;
-    private Integer personasIdPersonas;
+    private Long idRolesHasPersonas;
+    private Long idPersonas;
+    private Long idRoles;
 }

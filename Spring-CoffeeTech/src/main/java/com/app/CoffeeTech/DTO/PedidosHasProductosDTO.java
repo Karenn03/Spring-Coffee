@@ -4,12 +4,12 @@ import lombok.*;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class PedidosHasProductosDTO {
-    private Integer idPedidosHasProductos;
-    private Integer pedidosIdPedidos;
-    private Integer pedidosMesasIdMesas;
-    private Integer pedidosVentasIdVentas;
-    private Integer pedidosPersonasIdPersonas;
-    private Integer productosIdProductos;
-    private Integer productosTipoProductoIdTipoProducto;
+    private Long idPedidosHasProductos;
+    private Long idPedidos;
+    private Long idMesas;
+    private Long idVentas;
+    private Long idPersonas;
+    private Long idProductos;
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PersonaService implements IDAO<PersonaEntity, Long> {
@@ -16,12 +17,13 @@ public class PersonaService implements IDAO<PersonaEntity, Long> {
 
     @Override
     public List<PersonaEntity> findAll() {
-        return List.of();
+        return personaRepository.findAll();
     }
 
     @Override
-    public PersonaEntity getById(Long aLong) {
-        return null;
+    public PersonaEntity getById(Long id) {
+        Optional<PersonaEntity> optionalPerson = personaRepository.findById(id);// Usa Optional para manejar el posible valor nulo al buscar por ID
+        return optionalPerson.orElse(null);
     }
 
     @Override
@@ -42,5 +44,9 @@ public class PersonaService implements IDAO<PersonaEntity, Long> {
     @Override
     public void create(PersonaEntity entity) {
         this.personaRepository.save(entity);
+    }
+
+    public PersonaEntity findByDocument(String document) {
+        return personaRepository.findByDocument(document);
     }
 }

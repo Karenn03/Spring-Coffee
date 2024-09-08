@@ -4,9 +4,10 @@ import lombok.*;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class VentasHasProductosDTO {
-    private Integer idVentasHasProductos;
-    private Integer ventasIdVentas;
-    private Integer productosIdProductos;
-    private Integer productosTipoProductosIdTipoProducto;
+    private Long idVentasHasProductos;
+    private Long idVentas;
+    private Long idProductos;
+    private Long idTipoProducto;
 }

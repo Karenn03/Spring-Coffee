@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RolesHasPersonasService implements IDAO<RolesHasPersonasEntity, Long> {
@@ -16,12 +17,13 @@ public class RolesHasPersonasService implements IDAO<RolesHasPersonasEntity, Lon
 
     @Override
     public List<RolesHasPersonasEntity> findAll() {
-        return List.of();
+        return rolesHasPersonasRepository.findAll();
     }
 
     @Override
-    public RolesHasPersonasEntity getById(Long aLong) {
-        return null;
+    public RolesHasPersonasEntity getById(Long id) {
+        Optional<RolesHasPersonasEntity> optionalReviews = rolesHasPersonasRepository.findById(id);
+        return optionalReviews.orElse(null);
     }
 
     @Override

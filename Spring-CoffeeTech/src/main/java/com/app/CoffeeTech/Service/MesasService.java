@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MesasService implements IDAO<MesasEntity, Long> {
@@ -16,12 +17,13 @@ public class MesasService implements IDAO<MesasEntity, Long> {
 
     @Override
     public List<MesasEntity> findAll() {
-        return List.of();
+        return mesasRepository.findAll();
     }
 
     @Override
-    public MesasEntity getById(Long aLong) {
-        return null;
+    public MesasEntity getById(Long id) {
+        Optional<MesasEntity> optionalTable = mesasRepository.findById(id);
+        return optionalTable.orElse(null);
     }
 
     @Override

@@ -11,6 +11,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Table(name = "Productos_has_CarritoCompras")
 public class ProductosHasCarritoComprasEntity implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idProductos_has_Carrito_Compras")

@@ -15,7 +15,7 @@ public class VentasHasProductosEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idVentas_has_Productos")
-    private Integer idVentasHasProductos;
+    private Long idVentasHasProductos;
 
     @ManyToOne
     @JoinColumn(name = "idVentas", nullable = false)

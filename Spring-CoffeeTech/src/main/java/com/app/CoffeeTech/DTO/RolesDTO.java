@@ -4,7 +4,8 @@ import lombok.*;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class RolesDTO {
-    private Integer idRoles;
+    private Long idRoles;
     private String nombreRol;
 }

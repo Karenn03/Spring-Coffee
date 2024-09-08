@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReservaService implements IDAO<ReservaEntity, Long> {
@@ -16,12 +17,13 @@ public class ReservaService implements IDAO<ReservaEntity, Long> {
 
     @Override
     public List<ReservaEntity> findAll() {
-        return List.of();
+        return reservaRepository.findAll();
     }
 
     @Override
-    public ReservaEntity getById(Long aLong) {
-        return null;
+    public ReservaEntity getById(Long id) {
+        Optional<ReservaEntity> optionalReservation = reservaRepository.findById(id);
+        return optionalReservation.orElse(null);
     }
 
     @Override

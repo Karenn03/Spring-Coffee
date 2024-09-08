@@ -4,14 +4,14 @@ import lombok.*;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class PersonaDTO {
-    private Integer idPersonas;
+    private Long idPersonas;
     private String documento;
-    private String nombreUsuario;
-    private String primerNombre;
-    private String segundoNombre;
-    private String primerApellido;
-    private String segundoApellido;
+    private String nombres;
+    private String apellidos;
+    private String correoElectronico;
+    private String contraseña;
     private String telefono;
     private String direccion;
 }

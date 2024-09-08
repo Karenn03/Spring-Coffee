@@ -5,8 +5,9 @@ import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class VentasDTO {
-    private Integer idVentas;
+    private Long idVentas;
     private LocalDate fecha;
-    private Integer cantidad;
+    private Long cantidad;
 }

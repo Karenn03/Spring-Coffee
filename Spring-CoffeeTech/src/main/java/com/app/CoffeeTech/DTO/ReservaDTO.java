@@ -6,9 +6,12 @@ import java.time.LocalTime;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class ReservaDTO {
-    private Integer idReserva;
+    private Long idReserva;
     private LocalDate fecha;
     private LocalTime hora;
-    private Integer cantidadPersonas;
+    private Long cantidadPersonas;
+    private Long idPersonas;
+    private Long idMesas;
 }

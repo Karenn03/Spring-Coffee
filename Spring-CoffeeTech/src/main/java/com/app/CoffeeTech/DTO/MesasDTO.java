@@ -4,8 +4,8 @@ import lombok.*;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class MesasDTO {
-    private Integer idMesas;
-    private Integer numeroMesa;
-    private Integer capacidad;
+    private Long idMesas;
+    private Long capacidad;
 }

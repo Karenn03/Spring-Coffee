@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DomicilioService implements IDAO<DomicilioEntity, Long> {
@@ -16,12 +17,13 @@ public class DomicilioService implements IDAO<DomicilioEntity, Long> {
 
     @Override
     public List<DomicilioEntity> findAll() {
-        return List.of();
+        return domicilioRepository.findAll();
     }
 
     @Override
-    public DomicilioEntity getById(Long aLong) {
-        return null;
+    public DomicilioEntity getById(Long id) {
+        Optional<DomicilioEntity> optionalAddress = domicilioRepository.findById(id);
+        return optionalAddress.orElse(null);
     }
 
     @Override
