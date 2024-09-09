@@ -46,7 +46,7 @@ public class PersonaService implements IDAO<PersonaEntity, Long> {
         this.personaRepository.save(entity);
     }
 
-    public PersonaEntity findByDocument(String document) {
-        return personaRepository.findByDocument(document);
+    public PersonaEntity findByDocument(String documento) {
+        return personaRepository.findByDocumento(documento);
     }
 }

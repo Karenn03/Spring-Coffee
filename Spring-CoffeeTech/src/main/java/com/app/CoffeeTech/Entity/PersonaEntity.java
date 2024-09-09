@@ -38,7 +38,4 @@ public class PersonaEntity implements Serializable {
     @Column(name = "direccion", nullable = false, length = 120)
     private String direccion;
 
-    @OneToOne(mappedBy = "persona")
-    private CarritoComprasEntity carritoCompras;
-
 }

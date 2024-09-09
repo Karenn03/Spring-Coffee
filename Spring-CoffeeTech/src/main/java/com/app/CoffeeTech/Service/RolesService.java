@@ -46,7 +46,7 @@ public class RolesService implements IDAO<RolesEntity, Long> {
         this.rolesRepository.save(entity);
     }
 
-    public RolesEntity findByRolName(String nombreRol) {
-        return rolesRepository.findByRolName(nombreRol);
+    public RolesEntity findByNombreRol(String nombreRol) {
+        return rolesRepository.findByNombreRol(nombreRol);
     }
 }

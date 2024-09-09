@@ -1,45 +1,91 @@
 package com.app.CoffeeTech.Business;
 
+import com.app.CoffeeTech.DTO.MesasDTO;
 import com.app.CoffeeTech.Entity.MesasEntity;
-import com.app.CoffeeTech.Repository.MesasRepository;
+import com.app.CoffeeTech.Service.MesasService;
+import com.app.CoffeeTech.Utilities.CustomException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class MesasBusiness {
 
     @Autowired
-    MesasRepository mesasRepository;
+    MesasService mesasService;
 
-    public List<MesasEntity> getAllMesas() {
-        return mesasRepository.findAll();
-    }
+    private final ModelMapper modelMapper = new ModelMapper();
 
-    public Optional<MesasEntity> getMesasById(Long id) {
-        return mesasRepository.findById(id);
-    }
-
-    public MesasEntity createMesas(MesasEntity Mesas) {
-        return mesasRepository.save(Mesas);
-    }
-
-    public MesasEntity updateMesas(Long id, MesasEntity mesasDetails) {
-        Optional<MesasEntity> Mesas = mesasRepository.findById(id);
-        if (Mesas.isPresent()) {
-            MesasEntity existingMesas = Mesas.get();
-            existingMesas.setNumeroMesa(mesasDetails.getNumeroMesa());
-            existingMesas.setCapacidad(mesasDetails.getCapacidad());
-            return mesasRepository.save(existingMesas);
-        } else {
-            throw new RuntimeException("Mesa con id: " + id + " no encontrada");
+    //Metodo para traer todas las mesas
+    public List<MesasDTO> findAll(){
+        try {
+            List<MesasEntity> mesasList = mesasService.findAll();
+            if (mesasList.isEmpty()){
+                return new ArrayList<>();
+            }
+            List<MesasDTO> mesasDtoList = new ArrayList<>();
+            mesasList.forEach(MesasEntity -> mesasDtoList.add(modelMapper.map(MesasEntity, MesasDTO.class)));
+            return mesasDtoList;
+        } catch (Exception e){
+            throw new CustomException("Error al obtener todas las mesas.");
         }
     }
 
-    public void deleteMesas(Long id) {
-        mesasRepository.deleteById(id);
+    //Metodo para buscar por id
+    public MesasDTO getById(Long id){
+        try {
+            MesasEntity mesasEntity = mesasService.getById(id);
+            if (mesasEntity == null){
+                throw new CustomException("Mesa con id " + id + " no encontrada.");
+            }
+            return modelMapper.map(mesasEntity, MesasDTO.class);
+        } catch (Exception e){
+            throw new CustomException("Error al obtener la mesa por id.");
+        }
     }
 
+    // Método para actualizar una mesa
+    public void update(Long id, MesasDTO mesasDto) {
+        try {
+            MesasEntity existingTable = mesasService.getById(id);
+            if (existingTable == null) {
+                throw new CustomException("Mesa con id " + id + " no se encuentra.");
+            }
+            existingTable.setCapacidad(mesasDto.getCapacidad());
+            mesasService.save(existingTable);
+        } catch (Exception e) {
+            throw new CustomException("Error al actualizar la mesa.");
+        }
+    }
+
+    //Metodo para crear, guardar una nueva mesa
+    public void create(MesasDTO mesasDto){
+        try {
+            Long IdMesa = mesasDto.getIdMesas();
+            MesasEntity existingRole = mesasService.getById(IdMesa);
+            if (existingRole != null) {
+                throw new CustomException("La mesa con el id " + IdMesa + " ya existe.");
+            }
+            MesasEntity mesasEntity = modelMapper.map(mesasDto, MesasEntity.class);
+            mesasService.save(mesasEntity);
+        } catch (Exception e){
+            throw new CustomException("Error creando la mesa.");
+        }
+    }
+
+    // Metodo para eliminar una mesa
+    public void delete(Long idMesa) {
+        try {
+            MesasEntity mesasEntity = mesasService.getById(idMesa);
+            if (mesasEntity == null) {
+                throw new CustomException("Mesa con id " + idMesa + " no encontrada.");
+            }
+            mesasService.delete(mesasEntity);
+        } catch (Exception e) {
+            throw new CustomException("Error eliminando la mesa: " + e.getMessage());
+        }
+    }
 }
