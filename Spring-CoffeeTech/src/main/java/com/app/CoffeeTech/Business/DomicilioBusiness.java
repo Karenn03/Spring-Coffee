@@ -55,6 +55,7 @@ public class DomicilioBusiness {
                 throw new CustomException("Domicilio con id " + id + " no se encuentra.");
             }
             existingDelivery.setDireccion(domicilioDto.getDireccion());
+            existingDelivery.setEspecificaciones(domicilioDto.getEspecificaciones());
             domicilioService.save(existingDelivery);
         } catch (Exception e) {
             throw new CustomException("Error al actualizar el domicilio.");

@@ -27,15 +27,15 @@ public class PersonaBusiness {
                 return new ArrayList<>();
             }
             List<PersonaDTO> personasDtoList = new ArrayList<>();
-            personasList.forEach(PersonaEntity->personasDtoList.add(modelMapper.map(PersonaEntity, PersonaDTO.class)));
+            personasList.forEach(PersonaEntity -> personasDtoList.add(modelMapper.map(PersonaEntity, PersonaDTO.class)));
             return personasDtoList;
         } catch (Exception e){
             throw new CustomException("Error al obtener todas las personas.");
         }
     }
 
-    //Metodo para traer a una persona por ID
-    public PersonaDTO getById (Long id){
+    //Metodo para buscar por id
+    public PersonaDTO getById(Long id){
         try {
             PersonaEntity personaEntity = personaService.getById(id);
             if (personaEntity == null){
@@ -45,43 +45,53 @@ public class PersonaBusiness {
         } catch (Exception e){
             throw new CustomException("Error al obtener la persona por id.");
         }
-
     }
 
-    //Netodo para actualizar una persona
-    public void update(PersonaDTO personaDto){
+    // Método para actualizar una persona
+    public void update(Long id, PersonaDTO personaDto) {
         try {
-            PersonaEntity personaEntity = modelMapper.map(personaDto, PersonaEntity.class);
-            personaService.save(personaEntity);
-        }catch (Exception e){
+            PersonaEntity existingPerson = personaService.getById(id);
+            if (existingPerson == null) {
+                throw new CustomException("Persona con id " + id + " no se encuentra.");
+            }
+            existingPerson.setDocumento(personaDto.getDocumento());
+            existingPerson.setNombres(personaDto.getNombres());
+            existingPerson.setApellidos(personaDto.getApellidos());
+            existingPerson.setCorreoElectronico(personaDto.getCorreoElectronico());
+            existingPerson.setContraseña(personaDto.getContraseña());
+            existingPerson.setTelefono(personaDto.getTelefono());
+            existingPerson.setDireccion(personaDto.getDireccion());
+            personaService.save(existingPerson);
+        } catch (Exception e) {
             throw new CustomException("Error al actualizar la persona.");
         }
     }
 
-    //Metodo para crear, guardar una persona
+    //Metodo para crear, guardar una nueva persona
     public void create(PersonaDTO personaDto){
         try {
             String Documento = personaDto.getDocumento();
             PersonaEntity existingPerson = personaService.findByDocument(Documento);
-            if (existingPerson != null){
+            if (existingPerson != null) {
                 throw new CustomException("La persona con el documento " + Documento + " ya existe.");
             }
             PersonaEntity personaEntity = modelMapper.map(personaDto, PersonaEntity.class);
             personaService.save(personaEntity);
-        }catch (Exception e){
+        } catch (Exception e){
             throw new CustomException("Error creando la persona.");
         }
     }
 
-    //Metodo para eliminar una persona
-    public void delete(Long idPersonas){
+    // Metodo para eliminar una persona
+    public void delete(Long idPersonas) {
         try {
             PersonaEntity personaEntity = personaService.getById(idPersonas);
-            if (personaEntity == null){
+            if (personaEntity == null) {
                 throw new CustomException("Persona con id " + idPersonas + " no encontrada.");
             }
-        } catch (Exception e){
-            System.err.println(e.getMessage());
+            personaService.delete(personaEntity);
+        } catch (Exception e) {
+            throw new CustomException("Error eliminando la persona: " + e.getMessage());
         }
     }
 }
