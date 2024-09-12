@@ -19,7 +19,6 @@ public class ReservaBusiness {
 
     private final ModelMapper modelMapper = new ModelMapper();
 
-    //Metodo para traer todas las reservas
     public List<ReservaDTO> findAll(){
         try {
             List<ReservaEntity> reservaList = reservaService.findAll();
@@ -34,7 +33,6 @@ public class ReservaBusiness {
         }
     }
 
-    //Metodo para buscar por id
     public ReservaDTO getById(Long id){
         try {
             ReservaEntity reservaEntity = reservaService.getById(id);
@@ -47,7 +45,6 @@ public class ReservaBusiness {
         }
     }
 
-    // Método para actualizar una promocion
     public void update(Long id, ReservaDTO reservaDto) {
         try {
             ReservaEntity existingReservation = reservaService.getById(id);
@@ -61,14 +58,8 @@ public class ReservaBusiness {
         }
     }
 
-    //Metodo para crear, guardar una nueva reserva
     public void create(ReservaDTO reservaDto){
         try {
-            Long IdReserva = reservaDto.getIdReserva();
-            ReservaEntity existingReservation = reservaService.getById(IdReserva);
-            if (existingReservation != null) {
-                throw new CustomException("La reserva con el id " + IdReserva + " ya existe.");
-            }
             ReservaEntity reservaEntity = modelMapper.map(reservaDto, ReservaEntity.class);
             reservaService.save(reservaEntity);
         } catch (Exception e){
@@ -76,7 +67,6 @@ public class ReservaBusiness {
         }
     }
 
-    // Metodo para eliminar una reserva
     public void delete(Long idReserva) {
         try {
             ReservaEntity reservaEntity = reservaService.getById(idReserva);

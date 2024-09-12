@@ -19,7 +19,6 @@ public class PromocionesBusiness {
 
     private final ModelMapper modelMapper = new ModelMapper();
 
-    //Metodo para traer todas las promociones
     public List<PromocionesDTO> findAll(){
         try {
             List<PromocionesEntity> promocionesList = promocionesService.findAll();
@@ -34,7 +33,6 @@ public class PromocionesBusiness {
         }
     }
 
-    //Metodo para buscar por id
     public PromocionesDTO getById(Long id){
         try {
             PromocionesEntity promocionesEntity = promocionesService.getById(id);
@@ -47,7 +45,6 @@ public class PromocionesBusiness {
         }
     }
 
-    // Método para actualizar una promocion
     public void update(Long id, PromocionesDTO promocionesDto) {
         try {
             PromocionesEntity existingPromotion = promocionesService.getById(id);
@@ -61,14 +58,8 @@ public class PromocionesBusiness {
         }
     }
 
-    //Metodo para crear, guardar una nueva promocion
     public void create(PromocionesDTO promocionesDto){
         try {
-            Long IdPromociones = promocionesDto.getIdPromociones();
-            PromocionesEntity existingPromotion = promocionesService.getById(IdPromociones);
-            if (existingPromotion != null) {
-                throw new CustomException("La promoción con el id " + IdPromociones + " ya existe.");
-            }
             PromocionesEntity promocionesEntity = modelMapper.map(promocionesDto, PromocionesEntity.class);
             promocionesService.save(promocionesEntity);
         } catch (Exception e){
@@ -76,7 +67,6 @@ public class PromocionesBusiness {
         }
     }
 
-    // Metodo para eliminar una promocion
     public void delete(Long idPromociones) {
         try {
             PromocionesEntity promocionesEntity = promocionesService.getById(idPromociones);

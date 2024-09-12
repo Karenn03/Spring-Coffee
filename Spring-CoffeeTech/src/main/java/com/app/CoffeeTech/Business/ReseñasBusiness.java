@@ -19,7 +19,6 @@ public class ReseñasBusiness {
 
     private final ModelMapper modelMapper = new ModelMapper();
 
-    //Metodo para traer todas las reseñas
     public List<ReseñasDTO> findAll(){
         try {
             List<ReseñasEntity> reseñasList = reseñasService.findAll();
@@ -34,7 +33,6 @@ public class ReseñasBusiness {
         }
     }
 
-    //Metodo para buscar por id
     public ReseñasDTO getById(Long id){
         try {
             ReseñasEntity reseñasEntity = reseñasService.getById(id);
@@ -47,7 +45,6 @@ public class ReseñasBusiness {
         }
     }
 
-    // Método para actualizar una reseña
     public void update(Long id, ReseñasDTO reseñasDto) {
         try {
             ReseñasEntity existingReview = reseñasService.getById(id);
@@ -61,14 +58,8 @@ public class ReseñasBusiness {
         }
     }
 
-    //Metodo para crear, guardar una nueva reseña
     public void create(ReseñasDTO reseñasDto){
         try {
-            Long IdReseñas = reseñasDto.getIdReseñas();
-            ReseñasEntity existingReview = reseñasService.getById(IdReseñas);
-            if (existingReview != null) {
-                throw new CustomException("La reseña con el id " + IdReseñas + " ya existe.");
-            }
             ReseñasEntity reseñasEntity = modelMapper.map(reseñasDto, ReseñasEntity.class);
             reseñasService.save(reseñasEntity);
         } catch (Exception e){
@@ -76,7 +67,6 @@ public class ReseñasBusiness {
         }
     }
 
-    // Metodo para eliminar una reseña
     public void delete(Long idReseñas) {
         try {
             ReseñasEntity reseñasEntity = reseñasService.getById(idReseñas);

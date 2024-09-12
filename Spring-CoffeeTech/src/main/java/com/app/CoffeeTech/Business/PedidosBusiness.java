@@ -19,7 +19,6 @@ public class PedidosBusiness {
 
     private final ModelMapper modelMapper = new ModelMapper();
 
-    //Metodo para traer todos los pedidos
     public List<PedidosDTO> findAll(){
         try {
             List<PedidosEntity> pedidosList = pedidosService.findAll();
@@ -34,7 +33,6 @@ public class PedidosBusiness {
         }
     }
 
-    //Metodo para buscar por id
     public PedidosDTO getById(Long id){
         try {
             PedidosEntity pedidosEntity = pedidosService.getById(id);
@@ -47,7 +45,6 @@ public class PedidosBusiness {
         }
     }
 
-    // Método para actualizar un pedido
     public void update(Long id, PedidosDTO pedidosDto) {
         try {
             PedidosEntity existingOrder = pedidosService.getById(id);
@@ -61,14 +58,8 @@ public class PedidosBusiness {
         }
     }
 
-    //Metodo para crear, guardar un nuevo pedido
     public void create(PedidosDTO pedidosDto){
         try {
-            Long IdPedidos = pedidosDto.getIdPedidos();
-            PedidosEntity existingOrder = pedidosService.getById(IdPedidos);
-            if (existingOrder != null) {
-                throw new CustomException("El pedido con el id " + IdPedidos + " ya existe.");
-            }
             PedidosEntity pedidosEntity = modelMapper.map(pedidosDto, PedidosEntity.class);
             pedidosService.save(pedidosEntity);
         } catch (Exception e){

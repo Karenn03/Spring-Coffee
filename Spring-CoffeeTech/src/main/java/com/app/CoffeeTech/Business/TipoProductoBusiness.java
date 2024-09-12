@@ -19,7 +19,6 @@ public class TipoProductoBusiness {
 
     private final ModelMapper modelMapper = new ModelMapper();
 
-    //Metodo para traer todos los tipos de producto
     public List<TipoProductoDTO> findAll(){
         try {
             List<TipoProductoEntity> tipoProductoList = tipoProductoService.findAll();
@@ -34,7 +33,6 @@ public class TipoProductoBusiness {
         }
     }
 
-    //Metodo para buscar por id
     public TipoProductoDTO getById(Long id){
         try {
             TipoProductoEntity tipoProductoEntity = tipoProductoService.getById(id);
@@ -47,7 +45,6 @@ public class TipoProductoBusiness {
         }
     }
 
-    // Método para actualizar un tipo de producto
     public void update(Long id, TipoProductoDTO tipoProductoDto) {
         try {
             TipoProductoEntity existingProductType = tipoProductoService.getById(id);
@@ -61,14 +58,8 @@ public class TipoProductoBusiness {
         }
     }
 
-    //Metodo para crear, guardar un nuevo tipo de producto
     public void create(TipoProductoDTO tipoProductoDto){
         try {
-            Long IdTipoProducto = tipoProductoDto.getIdTipoProducto();
-            TipoProductoEntity existingProductType = tipoProductoService.getById(IdTipoProducto);
-            if (existingProductType != null) {
-                throw new CustomException("El tipo de producto con el id " + IdTipoProducto + " ya existe.");
-            }
             TipoProductoEntity tipoProductoEntity = modelMapper.map(tipoProductoDto, TipoProductoEntity.class);
             tipoProductoService.save(tipoProductoEntity);
         } catch (Exception e){
@@ -76,7 +67,6 @@ public class TipoProductoBusiness {
         }
     }
 
-    // Metodo para eliminar un tipo de producto
     public void delete(Long idTipoProducto) {
         try {
             TipoProductoEntity tipoProductoEntity = tipoProductoService.getById(idTipoProducto);
@@ -85,7 +75,7 @@ public class TipoProductoBusiness {
             }
             tipoProductoService.delete(tipoProductoEntity);
         } catch (Exception e) {
-            throw new CustomException("Error eliminando el tipo de producto: " + e.getMessage());
+            throw new CustomException("Error creando el tipo de producto.");
         }
     }
 }

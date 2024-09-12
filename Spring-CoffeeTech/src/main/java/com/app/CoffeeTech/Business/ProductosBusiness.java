@@ -19,7 +19,6 @@ public class ProductosBusiness {
 
     private final ModelMapper modelMapper = new ModelMapper();
 
-    //Metodo para traer todos los productos
     public List<ProductosDTO> findAll(){
         try {
             List<ProductosEntity> productosList = productosService.findAll();
@@ -34,7 +33,6 @@ public class ProductosBusiness {
         }
     }
 
-    //Metodo para buscar por id
     public ProductosDTO getById(Long id){
         try {
             ProductosEntity productosEntity = productosService.getById(id);
@@ -47,7 +45,6 @@ public class ProductosBusiness {
         }
     }
 
-    // Método para actualizar un domicilio
     public void update(Long id, ProductosDTO productosDto) {
         try {
             ProductosEntity existingProduct = productosService.getById(id);
@@ -61,14 +58,8 @@ public class ProductosBusiness {
         }
     }
 
-    //Metodo para crear, guardar un nuevo producto
     public void create(ProductosDTO productosDto){
         try {
-            Long IdProductos = productosDto.getIdProductos();
-            ProductosEntity existingProduct = productosService.getById(IdProductos);
-            if (existingProduct != null) {
-                throw new CustomException("El producto con el id " + IdProductos + " ya existe.");
-            }
             ProductosEntity productosEntity = modelMapper.map(productosDto, ProductosEntity.class);
             productosService.save(productosEntity);
         } catch (Exception e){
@@ -76,7 +67,6 @@ public class ProductosBusiness {
         }
     }
 
-    // Metodo para eliminar un producto
     public void delete(Long idProducto) {
         try {
             ProductosEntity productosEntity = productosService.getById(idProducto);

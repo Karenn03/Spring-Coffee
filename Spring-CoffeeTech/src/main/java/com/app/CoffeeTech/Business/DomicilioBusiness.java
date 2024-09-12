@@ -19,7 +19,6 @@ public class DomicilioBusiness {
 
     private final ModelMapper modelMapper = new ModelMapper();
 
-    //Metodo para traer todos los domicilios
     public List<DomicilioDTO> findAll(){
         try {
             List<DomicilioEntity> domicilioList = domicilioService.findAll();
@@ -34,7 +33,6 @@ public class DomicilioBusiness {
         }
     }
 
-    //Metodo para buscar por id
     public DomicilioDTO getById(Long id){
         try {
             DomicilioEntity domicilioEntity = domicilioService.getById(id);
@@ -47,7 +45,6 @@ public class DomicilioBusiness {
         }
     }
 
-    // Método para actualizar un domicilio
     public void update(Long id, DomicilioDTO domicilioDto) {
         try {
             DomicilioEntity existingDelivery = domicilioService.getById(id);
@@ -62,14 +59,8 @@ public class DomicilioBusiness {
         }
     }
 
-    //Metodo para crear, guardar un nuevo domicilio
     public void create(DomicilioDTO domicilioDto){
         try {
-            Long IdDomicilio = domicilioDto.getIdDomicilio();
-            DomicilioEntity existingDelivery = domicilioService.getById(IdDomicilio);
-            if (existingDelivery != null) {
-                throw new CustomException("El domicilio con el id " + IdDomicilio + " ya existe.");
-            }
             DomicilioEntity domiclioEntity = modelMapper.map(domicilioDto, DomicilioEntity.class);
             domicilioService.save(domiclioEntity);
         } catch (Exception e){
@@ -77,7 +68,6 @@ public class DomicilioBusiness {
         }
     }
 
-    // Metodo para eliminar un domicilio
     public void delete(Long idDomicilio) {
         try {
             DomicilioEntity domiclioEntity = domicilioService.getById(idDomicilio);

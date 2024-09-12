@@ -19,7 +19,6 @@ public class PersonaBusiness {
 
     private final ModelMapper modelMapper = new ModelMapper();
 
-    //Metodo para traer todas las personas
     public List<PersonaDTO> findAll(){
         try {
             List<PersonaEntity> personasList = personaService.findAll();
@@ -34,7 +33,6 @@ public class PersonaBusiness {
         }
     }
 
-    //Metodo para buscar por id
     public PersonaDTO getById(Long id){
         try {
             PersonaEntity personaEntity = personaService.getById(id);
@@ -47,7 +45,6 @@ public class PersonaBusiness {
         }
     }
 
-    // Método para actualizar una persona
     public void update(Long id, PersonaDTO personaDto) {
         try {
             PersonaEntity existingPerson = personaService.getById(id);
@@ -67,7 +64,6 @@ public class PersonaBusiness {
         }
     }
 
-    //Metodo para crear, guardar una nueva persona
     public void create(PersonaDTO personaDto){
         try {
             String Documento = personaDto.getDocumento();
@@ -82,7 +78,6 @@ public class PersonaBusiness {
         }
     }
 
-    // Metodo para eliminar una persona
     public void delete(Long idPersonas) {
         try {
             PersonaEntity personaEntity = personaService.getById(idPersonas);

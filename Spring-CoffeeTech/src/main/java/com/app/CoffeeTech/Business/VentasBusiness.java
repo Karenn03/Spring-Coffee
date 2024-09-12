@@ -19,7 +19,6 @@ public class VentasBusiness {
 
     private final ModelMapper modelMapper = new ModelMapper();
 
-    //Metodo para traer todas las ventas
     public List<VentasDTO> findAll(){
         try {
             List<VentasEntity> ventasList = ventasService.findAll();
@@ -34,7 +33,6 @@ public class VentasBusiness {
         }
     }
 
-    //Metodo para buscar por id
     public VentasDTO getById(Long id){
         try {
             VentasEntity ventasEntity = ventasService.getById(id);
@@ -47,7 +45,6 @@ public class VentasBusiness {
         }
     }
 
-    // Método para actualizar una venta
     public void update(Long id, VentasDTO ventasDto) {
         try {
             VentasEntity existingSale = ventasService.getById(id);
@@ -61,14 +58,8 @@ public class VentasBusiness {
         }
     }
 
-    //Metodo para crear, guardar una nueva venta
     public void create(VentasDTO ventasDto){
         try {
-            Long IdVentas = ventasDto.getIdVentas();
-            VentasEntity existingSale = ventasService.getById(IdVentas);
-            if (existingSale != null) {
-                throw new CustomException("La venta con el id " + IdVentas + " ya existe.");
-            }
             VentasEntity ventasEntity = modelMapper.map(ventasDto, VentasEntity.class);
             ventasService.save(ventasEntity);
         } catch (Exception e){
@@ -76,7 +67,6 @@ public class VentasBusiness {
         }
     }
 
-    // Metodo para eliminar una venta
     public void delete(Long idVentas) {
         try {
             VentasEntity ventasEntity = ventasService.getById(idVentas);

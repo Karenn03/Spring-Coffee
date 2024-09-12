@@ -19,7 +19,6 @@ public class MesasBusiness {
 
     private final ModelMapper modelMapper = new ModelMapper();
 
-    //Metodo para traer todas las mesas
     public List<MesasDTO> findAll(){
         try {
             List<MesasEntity> mesasList = mesasService.findAll();
@@ -34,7 +33,6 @@ public class MesasBusiness {
         }
     }
 
-    //Metodo para buscar por id
     public MesasDTO getById(Long id){
         try {
             MesasEntity mesasEntity = mesasService.getById(id);
@@ -47,7 +45,6 @@ public class MesasBusiness {
         }
     }
 
-    // Método para actualizar una mesa
     public void update(Long id, MesasDTO mesasDto) {
         try {
             MesasEntity existingTable = mesasService.getById(id);
@@ -61,14 +58,8 @@ public class MesasBusiness {
         }
     }
 
-    //Metodo para crear, guardar una nueva mesa
     public void create(MesasDTO mesasDto){
         try {
-            Long IdMesa = mesasDto.getIdMesas();
-            MesasEntity existingRole = mesasService.getById(IdMesa);
-            if (existingRole != null) {
-                throw new CustomException("La mesa con el id " + IdMesa + " ya existe.");
-            }
             MesasEntity mesasEntity = modelMapper.map(mesasDto, MesasEntity.class);
             mesasService.save(mesasEntity);
         } catch (Exception e){
@@ -76,7 +67,6 @@ public class MesasBusiness {
         }
     }
 
-    // Metodo para eliminar una mesa
     public void delete(Long idMesa) {
         try {
             MesasEntity mesasEntity = mesasService.getById(idMesa);
