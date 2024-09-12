@@ -1,7 +1,7 @@
 package com.app.CoffeeTech.Controller;
 
-import com.app.CoffeeTech.Business.RolesBusiness;
-import com.app.CoffeeTech.DTO.RolesDTO;
+import com.app.CoffeeTech.Business.ReseñasBusiness;
+import com.app.CoffeeTech.DTO.ReseñasDTO;
 import com.app.CoffeeTech.Utilities.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,29 +14,29 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/roles")
-public class RolesController {
+@RequestMapping("/api/reseñas")
+public class ReseñasController {
 
     @Autowired
-    RolesBusiness rolesBusiness;
+    ReseñasBusiness reseñasBusiness;
 
     @GetMapping("/all")
-    public ResponseEntity<List<RolesDTO>> getAllRoles() {
-        List<RolesDTO> rolesList = rolesBusiness.findAll();
-        if (rolesList.isEmpty()) {
+    public ResponseEntity<List<ReseñasDTO>> getAllReseñas() {
+        List<ReseñasDTO> reseñasList = reseñasBusiness.findAll();
+        if (reseñasList.isEmpty()) {
             return ResponseEntity.noContent().build();
         } else {
-            return ResponseEntity.ok(rolesList);
+            return ResponseEntity.ok(reseñasList);
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> getRolById(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> getReseñaById(@PathVariable Long id) {
         try {
-            RolesDTO roles = rolesBusiness.getById(id);
+            ReseñasDTO reseñas = reseñasBusiness.getById(id);
             Map<String, Object> response = new HashMap<>();
             response.put("Status", "success");
-            response.put("data ", roles);
+            response.put("data ", reseñas);
             response.put("code", 200);
             return ResponseEntity.ok(response);
         } catch (CustomException e) {
@@ -45,12 +45,12 @@ public class RolesController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Map<String, Object>> createRol(@Validated @RequestBody RolesDTO rolesDto) {
+    public ResponseEntity<Map<String, Object>> createReseña(@Validated @RequestBody ReseñasDTO reseñasDto) {
         try {
-            rolesBusiness.create(rolesDto);
+            reseñasBusiness.create(reseñasDto);
             Map<String, Object> response = new HashMap<>();
             response.put("Status", "success");
-            response.put("message ", "Rol Created Successfully");
+            response.put("message ", "Review Created Successfully");
             response.put("code", 200);
             return ResponseEntity.ok(response);
         } catch (CustomException e) {
@@ -59,12 +59,12 @@ public class RolesController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Map<String, Object>> updateRol(@PathVariable Long id, @Validated @RequestBody RolesDTO rolesDto) {
+    public ResponseEntity<Map<String, Object>> updateReseña(@PathVariable Long id, @Validated @RequestBody ReseñasDTO reseñasDto) {
         try {
-            rolesBusiness.update(id, rolesDto);
+            reseñasBusiness.update(id, reseñasDto);
             Map<String, Object> response = new HashMap<>();
             response.put("status", "success");
-            response.put("message", "Role Updated Successfully");
+            response.put("message", "Review Updated Successfully");
             return ResponseEntity.ok(response);
         } catch (CustomException e) {
             return handleException(e);
@@ -72,12 +72,12 @@ public class RolesController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Map<String, Object>> deleteRol(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> deleteReseña(@PathVariable Long id) {
         try {
-            rolesBusiness.delete(id);
+            reseñasBusiness.delete(id);
             Map<String, Object> response = new HashMap<>();
             response.put("status", "success");
-            response.put("message", "Rol Deleted Successfully");
+            response.put("message", "Review Deleted Successfully");
             return ResponseEntity.ok(response);
         } catch (CustomException e) {
             return handleException(e);

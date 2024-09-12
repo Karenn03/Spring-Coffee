@@ -1,7 +1,7 @@
 package com.app.CoffeeTech.Controller;
 
-import com.app.CoffeeTech.Business.RolesBusiness;
-import com.app.CoffeeTech.DTO.RolesDTO;
+import com.app.CoffeeTech.Business.PromocionesBusiness;
+import com.app.CoffeeTech.DTO.PromocionesDTO;
 import com.app.CoffeeTech.Utilities.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,29 +14,29 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/roles")
-public class RolesController {
+@RequestMapping("/api/promociones")
+public class PromocionesController {
 
     @Autowired
-    RolesBusiness rolesBusiness;
+    PromocionesBusiness promocionesBusiness;
 
     @GetMapping("/all")
-    public ResponseEntity<List<RolesDTO>> getAllRoles() {
-        List<RolesDTO> rolesList = rolesBusiness.findAll();
-        if (rolesList.isEmpty()) {
+    public ResponseEntity<List<PromocionesDTO>> getAllPromociones() {
+        List<PromocionesDTO> promocionesList = promocionesBusiness.findAll();
+        if (promocionesList.isEmpty()) {
             return ResponseEntity.noContent().build();
         } else {
-            return ResponseEntity.ok(rolesList);
+            return ResponseEntity.ok(promocionesList);
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> getRolById(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> getPromocionById(@PathVariable Long id) {
         try {
-            RolesDTO roles = rolesBusiness.getById(id);
+            PromocionesDTO promociones = promocionesBusiness.getById(id);
             Map<String, Object> response = new HashMap<>();
             response.put("Status", "success");
-            response.put("data ", roles);
+            response.put("data ", promociones);
             response.put("code", 200);
             return ResponseEntity.ok(response);
         } catch (CustomException e) {
@@ -45,12 +45,12 @@ public class RolesController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Map<String, Object>> createRol(@Validated @RequestBody RolesDTO rolesDto) {
+    public ResponseEntity<Map<String, Object>> createPromocion(@Validated @RequestBody PromocionesDTO promocionesDto) {
         try {
-            rolesBusiness.create(rolesDto);
+            promocionesBusiness.create(promocionesDto);
             Map<String, Object> response = new HashMap<>();
             response.put("Status", "success");
-            response.put("message ", "Rol Created Successfully");
+            response.put("message ", "Promotion Created Successfully");
             response.put("code", 200);
             return ResponseEntity.ok(response);
         } catch (CustomException e) {
@@ -59,12 +59,12 @@ public class RolesController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Map<String, Object>> updateRol(@PathVariable Long id, @Validated @RequestBody RolesDTO rolesDto) {
+    public ResponseEntity<Map<String, Object>> updatePromocion(@PathVariable Long id, @Validated @RequestBody PromocionesDTO promocionesDto) {
         try {
-            rolesBusiness.update(id, rolesDto);
+            promocionesBusiness.update(id, promocionesDto);
             Map<String, Object> response = new HashMap<>();
             response.put("status", "success");
-            response.put("message", "Role Updated Successfully");
+            response.put("message", "Promotion Updated Successfully");
             return ResponseEntity.ok(response);
         } catch (CustomException e) {
             return handleException(e);
@@ -72,12 +72,12 @@ public class RolesController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Map<String, Object>> deleteRol(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> deletePromocion(@PathVariable Long id) {
         try {
-            rolesBusiness.delete(id);
+            promocionesBusiness.delete(id);
             Map<String, Object> response = new HashMap<>();
             response.put("status", "success");
-            response.put("message", "Rol Deleted Successfully");
+            response.put("message", "Promotion Deleted Successfully");
             return ResponseEntity.ok(response);
         } catch (CustomException e) {
             return handleException(e);
