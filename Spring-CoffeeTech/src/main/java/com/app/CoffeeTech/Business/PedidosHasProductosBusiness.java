@@ -47,12 +47,12 @@ public class PedidosHasProductosBusiness {
 
     public void update(Long id, PedidosHasProductosDTO pedidosHasProductosDto) {
         try {
-            PedidosHasProductosEntity existingDelivery = pedidosHasProductosService.getById(id);
-            if (existingDelivery == null) {
+            PedidosHasProductosEntity existingOrdersHasProducts = pedidosHasProductosService.getById(id);
+            if (existingOrdersHasProducts == null) {
                 throw new CustomException("'Pedidos has productos' con id " + id + " no se encuentra.");
             }
-            existingDelivery.setIdPedidosHasProductos(pedidosHasProductosDto.getIdPedidosHasProductos());
-            pedidosHasProductosService.save(existingDelivery);
+            existingOrdersHasProducts.setIdPedidosHasProductos(pedidosHasProductosDto.getIdPedidosHasProductos());
+            pedidosHasProductosService.save(existingOrdersHasProducts);
         } catch (Exception e) {
             throw new CustomException("Error al actualizar el 'pedidos has productos'.");
         }

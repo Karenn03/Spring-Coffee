@@ -70,11 +70,11 @@ public class DomicilioBusiness {
 
     public void delete(Long idDomicilio) {
         try {
-            DomicilioEntity domiclioEntity = domicilioService.getById(idDomicilio);
-            if (domiclioEntity == null) {
+            DomicilioEntity domicilioEntity = domicilioService.getById(idDomicilio);
+            if (domicilioEntity == null) {
                 throw new CustomException("Domicilio con id " + idDomicilio + " no encontrado.");
             }
-            domicilioService.delete(domiclioEntity);
+            domicilioService.delete(domicilioEntity);
         } catch (Exception e) {
             throw new CustomException("Error eliminando el domicilio: " + e.getMessage());
         }

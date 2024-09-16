@@ -36,7 +36,7 @@ public class PedidosHasProductosController {
             PedidosHasProductosDTO pedidosHasProductos = pedidosHasProductosBusiness.getById(id);
             Map<String, Object> response = new HashMap<>();
             response.put("Status", "success");
-            response.put("data ", domicilio);
+            response.put("data ", pedidosHasProductos);
             response.put("code", 200);
             return ResponseEntity.ok(response);
         } catch (CustomException e) {
