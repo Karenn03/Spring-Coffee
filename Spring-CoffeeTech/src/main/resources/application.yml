@@ -5,7 +5,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/DBCoffee
     username: postgres
-    password: "1234"
+    password: "KM1013599968"
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -20,3 +20,8 @@ spring:
 
   main:
     allow-circular-references: true
+    
+  logging:
+    level:
+      org.hibernate.SQL: DEBUG
+      org.hibernate.type.descriptor.sql: TRACE
