@@ -50,7 +50,7 @@ public class PromocionesController {
             promocionesBusiness.create(promocionesDto);
             Map<String, Object> response = new HashMap<>();
             response.put("Status", "success");
-            response.put("message ", "Promotion Created Successfully");
+            response.put("message", "Promotion Created Successfully");
             response.put("code", 200);
             return ResponseEntity.ok(response);
         } catch (CustomException e) {

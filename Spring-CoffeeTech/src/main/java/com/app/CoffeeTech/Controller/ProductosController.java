@@ -50,7 +50,7 @@ public class ProductosController {
             productosBusiness.create(productosDto);
             Map<String, Object> response = new HashMap<>();
             response.put("Status", "success");
-            response.put("message ", "Product Created Successfully");
+            response.put("message", "Product Created Successfully");
             response.put("code", 200);
             return ResponseEntity.ok(response);
         } catch (CustomException e) {
