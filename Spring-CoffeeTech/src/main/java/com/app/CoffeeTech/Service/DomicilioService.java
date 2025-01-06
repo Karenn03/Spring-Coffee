@@ -3,6 +3,8 @@ package com.app.CoffeeTech.Service;
 import com.app.CoffeeTech.Entity.DomicilioEntity;
 import com.app.CoffeeTech.Repository.DomicilioRepository;
 import com.app.CoffeeTech.Service.DAO.IDAO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,8 +18,8 @@ public class DomicilioService implements IDAO<DomicilioEntity, Long> {
     DomicilioRepository domicilioRepository;
 
     @Override
-    public List<DomicilioEntity> findAll() {
-        return domicilioRepository.findAll();
+    public Page<DomicilioEntity> findAll(PageRequest pageRequest) {
+        return domicilioRepository.findAll(pageRequest);
     }
 
     @Override

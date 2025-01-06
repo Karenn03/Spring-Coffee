@@ -2,7 +2,7 @@ package com.app.CoffeeTech.Controller;
 
 import com.app.CoffeeTech.Business.ProductosBusiness;
 import com.app.CoffeeTech.DTO.ProductosDTO;
-import com.app.CoffeeTech.Utilities.CustomException;
+import com.app.CoffeeTech.Utilities.Exception.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

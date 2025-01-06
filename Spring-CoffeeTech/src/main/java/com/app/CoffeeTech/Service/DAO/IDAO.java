@@ -1,11 +1,12 @@
 package com.app.CoffeeTech.Service.DAO;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 public interface IDAO<T, ID> {
 
     // Método para obtener o retornar una lista de todas las instancias de una entidad en la base de datos.
-    List<T> findAll();
+    Page<T> findAll(PageRequest pageable);
 
     // Método para obtener una instancia específica de la entidad basada en un identificador único.
     T getById(ID id);

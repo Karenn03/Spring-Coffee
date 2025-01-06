@@ -17,13 +17,13 @@ public class DomicilioEntity implements Serializable {
     @Column(name = "idDomicilio")
     private Long idDomicilio;
 
-    @Column(name = "direccion", nullable = false, length = 120)
+    @Column(name = "direccion", nullable = false, length = 130)
     private String direccion;
 
     @Column(name = "especificaciones", nullable = false, length = 250)
     private String especificaciones;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "idPedidos")
     private PedidosEntity pedidos;
 

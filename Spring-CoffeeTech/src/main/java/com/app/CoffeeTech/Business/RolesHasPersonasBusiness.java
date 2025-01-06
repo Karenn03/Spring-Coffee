@@ -3,7 +3,7 @@ package com.app.CoffeeTech.Business;
 import com.app.CoffeeTech.DTO.RolesHasPersonasDTO;
 import com.app.CoffeeTech.Entity.RolesHasPersonasEntity;
 import com.app.CoffeeTech.Service.RolesHasPersonasService;
-import com.app.CoffeeTech.Utilities.CustomException;
+import com.app.CoffeeTech.Utilities.Exception.CustomException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

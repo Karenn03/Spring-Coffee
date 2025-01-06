@@ -1,4 +1,4 @@
-package com.app.CoffeeTech.Config;
+package com.app.CoffeeTech.Utilities.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

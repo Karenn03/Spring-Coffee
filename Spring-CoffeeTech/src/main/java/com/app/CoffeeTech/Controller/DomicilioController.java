@@ -2,92 +2,177 @@ package com.app.CoffeeTech.Controller;
 
 import com.app.CoffeeTech.Business.DomicilioBusiness;
 import com.app.CoffeeTech.DTO.DomicilioDTO;
-import com.app.CoffeeTech.Utilities.CustomException;
+import com.app.CoffeeTech.Utilities.Exception.CustomException;
+import com.app.CoffeeTech.Utilities.Http.ResponseHttpApi;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/api/domicilio")
 public class DomicilioController {
 
     @Autowired
     DomicilioBusiness domicilioBusiness;
 
+    // Find All Delivery
     @GetMapping("/all")
-    public ResponseEntity<List<DomicilioDTO>> getAllDomicilios() {
-        List<DomicilioDTO> domiciliosList = domicilioBusiness.findAll();
-        if (domiciliosList.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.ok(domiciliosList);
-        }
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> getDomicilioById(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> findAll(Pageable pageable) {
         try {
-            DomicilioDTO domicilio = domicilioBusiness.getById(id);
-            Map<String, Object> response = new HashMap<>();
-            response.put("Status", "success");
-            response.put("data ", domicilio);
-            response.put("code", 200);
-            return ResponseEntity.ok(response);
-        } catch (CustomException e) {
-            return handleException(e);
+            Page<DomicilioDTO> domiciliosList = domicilioBusiness.findAll(pageable);
+            if (domiciliosList.hasContent()) {
+                return new ResponseEntity<>(
+                        ResponseHttpApi.responseHttpFindAll(
+                                domiciliosList.getContent(),
+                                ResponseHttpApi.CODE_OK,
+                                "Deliveries found successfully.",
+                                domiciliosList.getTotalPages(),
+                                domiciliosList.getNumber(),
+                                (int) domiciliosList.getTotalElements()
+                        ), HttpStatus.OK
+                );
+            } else {
+                return new ResponseEntity<>(
+                        ResponseHttpApi.responseHttpFindAll(
+                                null,
+                                ResponseHttpApi.NO_CONTENT,
+                                "No deliveries found.",
+                                0, 0, 0
+                        ), HttpStatus.NO_CONTENT
+                );
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpError(
+                            "Error retrieving deliveries.",
+                            HttpStatus.INTERNAL_SERVER_ERROR,
+                            e.getMessage()
+                    ), HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
     }
 
+    // Find Delivery by ID
+    @GetMapping("/find/{id}")
+    public ResponseEntity<Map<String, Object>> findById(@PathVariable Long id) {
+        try {
+            DomicilioDTO domicilioDTO = domicilioBusiness.findById(id);
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpFindId(
+                            domicilioDTO,
+                            ResponseHttpApi.CODE_OK,
+                            "Successfully completed."
+                    ), HttpStatus.OK
+            );
+        } catch (CustomException e) {
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpFindId(
+                            null,
+                            ResponseHttpApi.CODE_BAD,
+                            e.getMessage()),
+                    HttpStatus.CONFLICT
+            );
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpFindId(
+                            null,
+                            ResponseHttpApi.CODE_BAD,
+                            "Error getting Delivery." + e.getMessage()),
+                    HttpStatus.CONFLICT
+            );
+        }
+    }
+
+    // Add Delivery
     @PostMapping("/create")
-    public ResponseEntity<Map<String, Object>> createDomicilio(@Validated @RequestBody DomicilioDTO domicilioDto) {
+    public ResponseEntity<Map<String, Object>> add(@Validated @RequestBody DomicilioDTO domicilioDto) {
         try {
             domicilioBusiness.create(domicilioDto);
-            Map<String, Object> response = new HashMap<>();
-            response.put("Status", "success");
-            response.put("message ", "Delivery Created Successfully");
-            response.put("code", 200);
-            return ResponseEntity.ok(response);
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpAction(
+                            ResponseHttpApi.CODE_OK,
+                            "Delivery added successfully."
+                    ), HttpStatus.CREATED
+            );
         } catch (CustomException e) {
-            return handleException(e);
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpAction(
+                            ResponseHttpApi.CODE_BAD,
+                            e.getMessage()
+                    ), HttpStatus.BAD_REQUEST
+            );
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpError(
+                            "Error creating Delivery.",
+                            HttpStatus.INTERNAL_SERVER_ERROR,
+                            e.getMessage()
+                    ), HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
     }
 
+    // Update Delivery
     @PutMapping("/update/{id}")
-    public ResponseEntity<Map<String, Object>> updateDomicilio(@PathVariable Long id, @Validated @RequestBody DomicilioDTO domicilioDto) {
+    public ResponseEntity<Map<String, Object>> update(@PathVariable Long id, @Validated @RequestBody DomicilioDTO domicilioDto) {
         try {
             domicilioBusiness.update(id, domicilioDto);
-            Map<String, Object> response = new HashMap<>();
-            response.put("status", "success");
-            response.put("message", "Delivery Updated Successfully");
-            return ResponseEntity.ok(response);
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpAction(
+                            ResponseHttpApi.CODE_OK,
+                            "Delivery updated successfully"
+                    ), HttpStatus.OK
+            );
         } catch (CustomException e) {
-            return handleException(e);
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpAction(
+                            ResponseHttpApi.CODE_BAD,
+                            e.getMessage()
+                    ), HttpStatus.BAD_REQUEST
+            );
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpError(
+                            "Error updating Delivery.",
+                            HttpStatus.INTERNAL_SERVER_ERROR,
+                            e.getMessage()
+                    ), HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Map<String, Object>> deleteDomicilio(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
         try {
             domicilioBusiness.delete(id);
-            Map<String, Object> response = new HashMap<>();
-            response.put("status", "success");
-            response.put("message", "Delivery Deleted Successfully");
-            return ResponseEntity.ok(response);
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpAction(
+                            ResponseHttpApi.CODE_OK,
+                            "Delivery deleted successfully"
+                    ), HttpStatus.OK
+            );
         } catch (CustomException e) {
-            return handleException(e);
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpAction(
+                            ResponseHttpApi.CODE_BAD,
+                            e.getMessage()
+                    ), HttpStatus.BAD_REQUEST
+            );
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpError(
+                            "Error deleting Class Type.",
+                            HttpStatus.INTERNAL_SERVER_ERROR,
+                            e.getMessage()
+                    ), HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
-    }
-
-    private ResponseEntity<Map<String, Object>> handleException(CustomException e) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("status", "error");
-        response.put("message", e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }

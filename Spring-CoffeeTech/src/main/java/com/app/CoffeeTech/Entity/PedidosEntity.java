@@ -36,7 +36,7 @@ public class PedidosEntity implements Serializable {
     @JoinColumn(name = "idPersonas")
     private PersonaEntity persona;
 
-    @OneToOne(mappedBy = "pedidos")
+    @OneToOne(mappedBy = "pedidos", cascade = CascadeType.PERSIST)
     private DomicilioEntity domicilio;
 
 }

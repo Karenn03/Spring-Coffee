@@ -3,7 +3,7 @@ package com.app.CoffeeTech.Business;
 import com.app.CoffeeTech.DTO.PromocionesHasProductosDTO;
 import com.app.CoffeeTech.Entity.PromocionesHasProductosEntity;
 import com.app.CoffeeTech.Service.PromocionesHasProductosService;
-import com.app.CoffeeTech.Utilities.CustomException;
+import com.app.CoffeeTech.Utilities.Exception.CustomException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
