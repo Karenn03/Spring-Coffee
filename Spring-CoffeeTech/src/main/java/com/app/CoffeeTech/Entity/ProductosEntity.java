@@ -2,7 +2,9 @@ package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,8 +28,23 @@ public class ProductosEntity implements Serializable {
     @Column(name = "precio", nullable = false)
     private Double precio;
 
-    @ManyToOne
+    // Relations
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "idTipoProducto", nullable = false)
     private TipoProductoEntity tipoProducto;
+
+    @ManyToMany(mappedBy = "productos", cascade = CascadeType.PERSIST)
+    private List<PedidosEntity> pedidos;
+
+    // Breakout Table
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "ProductosHasPromociones",
+            joinColumns = {
+                    @JoinColumn(name = "idProductos", nullable = false),
+                    @JoinColumn(name = "idTipoProducto", referencedColumnName = "idTipoProducto", nullable = false)
+            },
+            inverseJoinColumns = @JoinColumn(name = "idPromociones", nullable = false)
+    )
+    private List<PromocionesEntity> promociones;
 
 }

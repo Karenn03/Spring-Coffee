@@ -23,8 +23,9 @@ public class DomicilioEntity implements Serializable {
     @Column(name = "especificaciones", nullable = false, length = 250)
     private String especificaciones;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "idPedidos")
+    // Relations
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "idPedidos", nullable = false)
     private PedidosEntity pedidos;
 
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,7 +25,18 @@ public class VentasEntity implements Serializable {
     @Column(name = "cantidad", nullable = false)
     private Long cantidad;
 
-    @OneToOne(mappedBy = "ventas")
+    // Relations
+    @OneToOne(mappedBy = "ventas", cascade = CascadeType.REMOVE)
     private PedidosEntity pedidos;
+
+    // Breakout Table
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "VentasHasProductos",
+            joinColumns = @JoinColumn(name = "idVentas", nullable = false),
+            inverseJoinColumns = {
+                    @JoinColumn(name = "idProductos", nullable = false),
+                    @JoinColumn(name = "idTipoProducto", referencedColumnName = "idTipoProducto", nullable = false)
+            })
+    private List<ProductosEntity> productos;
 
 }

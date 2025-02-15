@@ -1,7 +1,9 @@
 package com.app.CoffeeTech.Utilities.Exception;
 
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+@Getter
 public class CustomException extends RuntimeException{
     private HttpStatus status;
 
@@ -10,7 +12,4 @@ public class CustomException extends RuntimeException{
         this.status = status;
     }
 
-    public HttpStatus getStatus() {
-        return status;
-    }
 }

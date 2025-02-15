@@ -28,12 +28,13 @@ public class ReservaEntity implements Serializable {
     @Column(name = "cantidad_personas", nullable = false)
     private Long cantidadPersonas;
 
-    @ManyToOne
-    @JoinColumn(name = "idPersonas")
+    // Relations
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "idPersonas", nullable = false)
     private PersonaEntity persona;
 
-    @OneToOne
-    @JoinColumn(name = "idMesas")
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "idMesas", nullable = false)
     private MesasEntity mesas;
 
 }

@@ -2,8 +2,11 @@ package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,25 +21,42 @@ public class PedidosEntity implements Serializable {
     @Column(name = "idPedidos")
     private Long idPedidos;
 
-    @Column(name = "fecha_pedido", nullable = false, length = 20)
+    @CreationTimestamp
+    @Column(name = "fecha_pedido", nullable = false)
     private LocalDateTime fechaPedido;
 
     @Column(name = "total", nullable = false)
     private Double total;
 
-    @ManyToOne
-    @JoinColumn(name = "idMesas")
+    // Relations
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "idMesas", nullable = true)
     private MesasEntity mesas;
 
-    @OneToOne
-    @JoinColumn(name = "idVentas")
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "idVentas", nullable = false)
     private VentasEntity ventas;
 
-    @ManyToOne
-    @JoinColumn(name = "idPersonas")
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "idPersonas", nullable = false)
     private PersonaEntity persona;
 
-    @OneToOne(mappedBy = "pedidos", cascade = CascadeType.PERSIST)
+    @OneToOne(mappedBy = "pedidos", cascade = CascadeType.REMOVE)
     private DomicilioEntity domicilio;
+
+    // Breakout Table
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "PedidosHasProductos",
+            joinColumns = {
+                    @JoinColumn(name = "idPedidos", nullable = false),
+                    @JoinColumn(name = "idMesas", referencedColumnName = "idMesas", nullable = true),
+                    @JoinColumn(name = "idVentas", referencedColumnName = "idVentas", nullable = false),
+                    @JoinColumn(name = "idPersonas", referencedColumnName = "idPersonas", nullable = false)
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "idProductos", nullable = false),
+                    @JoinColumn(name = "idTipoProducto", referencedColumnName = "idTipoProducto", nullable = false)
+            })
+    private List<ProductosEntity> productos;
 
 }

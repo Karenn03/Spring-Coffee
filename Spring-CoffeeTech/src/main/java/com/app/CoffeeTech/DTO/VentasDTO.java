@@ -7,7 +7,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VentasDTO {
+
     private Long idVentas;
     private LocalDate fecha;
     private Long cantidad;
+
 }
