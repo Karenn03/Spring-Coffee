@@ -20,6 +20,9 @@ public class MesasEntity implements Serializable {
     @Column(name = "capacidad", nullable = false)
     private Long capacidad;
 
+    @Column(nullable = false, columnDefinition = "boolean default true")
+    private Boolean state;
+
     // Relations
     @OneToOne(mappedBy = "mesas", cascade = CascadeType.REMOVE)
     private ReservaEntity reserva;

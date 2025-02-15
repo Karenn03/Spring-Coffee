@@ -15,4 +15,7 @@ public class MesasDTO {
     @Min(value = 1, message = "La capacidad debe ser mayor o igual a 1")
     private Long capacidad;
 
+    @NotNull(message = "El estado es obligatorio")
+    private Boolean state;
+
 }

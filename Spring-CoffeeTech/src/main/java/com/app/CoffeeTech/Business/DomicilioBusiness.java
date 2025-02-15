@@ -12,9 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Component
 public class DomicilioBusiness {
 
@@ -28,7 +25,7 @@ public class DomicilioBusiness {
     public Page<DomicilioDTO> findAll(Pageable pageable) {
         try {
             PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
-            Page<DomicilioEntity> domicilioList = this.domicilioService.findAll(pageRequest);
+            Page<DomicilioEntity> domicilioList = domicilioService.findAll(pageRequest);
             if (domicilioList.isEmpty()){
                 return Page.empty();
             }
@@ -41,7 +38,7 @@ public class DomicilioBusiness {
     // Find Delivery by ID
     public DomicilioDTO findById(Long id){
         try {
-            DomicilioEntity domicilioEntity = this.domicilioService.getById(id);
+            DomicilioEntity domicilioEntity = domicilioService.getById(id);
             if (domicilioEntity == null){
                 throw new CustomException("Domiclio con id " + id + " no encontrado.", HttpStatus.NOT_FOUND);
             }
@@ -54,7 +51,7 @@ public class DomicilioBusiness {
     }
 
     // Add Domicilio
-    public void create(DomicilioDTO domicilioDto){
+    public void add(DomicilioDTO domicilioDto){
         try {
             DomicilioEntity domiclioEntity = modelMapper.map(domicilioDto, DomicilioEntity.class);
             domicilioService.save(domiclioEntity);

@@ -6,10 +6,11 @@ import com.app.CoffeeTech.Service.MesasService;
 import com.app.CoffeeTech.Utilities.Exception.CustomException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class MesasBusiness {
@@ -17,65 +18,98 @@ public class MesasBusiness {
     @Autowired
     MesasService mesasService;
 
+    // ModelMapper instance to convert to DTO (This only works if the attribute names are the same in the entity and the DTO)
     private final ModelMapper modelMapper = new ModelMapper();
 
-    public List<MesasDTO> findAll(){
+    // Find All Tables
+    public Page<MesasDTO> findAll(Pageable pageable) {
         try {
-            List<MesasEntity> mesasList = mesasService.findAll();
-            if (mesasList.isEmpty()){
-                return new ArrayList<>();
+            PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+            Page<MesasEntity> mesasPage = mesasService.findAll(pageRequest);
+            if (mesasPage.isEmpty()){
+                return Page.empty();
             }
-            List<MesasDTO> mesasDtoList = new ArrayList<>();
-            mesasList.forEach(MesasEntity -> mesasDtoList.add(modelMapper.map(MesasEntity, MesasDTO.class)));
-            return mesasDtoList;
-        } catch (Exception e){
-            throw new CustomException("Error al obtener todas las mesas.");
+            return mesasPage.map(mesasEntity -> modelMapper.map(mesasEntity, MesasDTO.class));
+        } catch (Exception e) {
+            throw new CustomException("Error al obtener todas las mesas." + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    public MesasDTO getById(Long id){
+    // Find Table by ID
+    public MesasDTO findById(Long id){
         try {
             MesasEntity mesasEntity = mesasService.getById(id);
             if (mesasEntity == null){
-                throw new CustomException("Mesa con id " + id + " no encontrada.");
+                throw new CustomException("Mesa con id " + id + " no encontrada.", HttpStatus.NOT_FOUND);
             }
             return modelMapper.map(mesasEntity, MesasDTO.class);
-        } catch (Exception e){
-            throw new CustomException("Error al obtener la mesa por id.");
+        } catch (CustomException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new CustomException("Error al obtener la mesa por id." + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
+    // Add Table
+    public void add(MesasDTO mesasDto){
+        try {
+            MesasEntity mesasEntity = modelMapper.map(mesasDto, MesasEntity.class);
+            mesasService.save(mesasEntity);
+        } catch (CustomException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new CustomException("Error creando la mesa." + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // Update Table
     public void update(Long id, MesasDTO mesasDto) {
         try {
             MesasEntity existingTable = mesasService.getById(id);
             if (existingTable == null) {
-                throw new CustomException("Mesa con id " + id + " no se encuentra.");
+                throw new CustomException("Mesa con id " + id + " no se encuentra.", HttpStatus.NOT_FOUND);
             }
             existingTable.setCapacidad(mesasDto.getCapacidad());
             mesasService.save(existingTable);
+        } catch (CustomException e) {
+            throw e;
         } catch (Exception e) {
-            throw new CustomException("Error al actualizar la mesa.");
+            throw new CustomException("Error al actualizar la mesa." + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    public void create(MesasDTO mesasDto){
+    // Toggle Table (activate or deactivate)
+    public Boolean toggles(Long id) {
         try {
-            MesasEntity mesasEntity = modelMapper.map(mesasDto, MesasEntity.class);
-            mesasService.save(mesasEntity);
-        } catch (Exception e){
-            throw new CustomException("Error creando la mesa.");
+            MesasEntity mesasEntity = mesasService.getById(id);
+            if (mesasEntity.getState().equals(Boolean.TRUE)) {
+                mesasEntity.setState(false);
+                mesasService.save(mesasEntity);
+                return false;
+            } else {
+                mesasEntity.setState(true);
+                mesasService.save(mesasEntity);
+                return true;
+            }
+        } catch (CustomException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new CustomException("Error alternando el estado de la mesa: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
+    // Delete Table
     public void delete(Long idMesa) {
         try {
             MesasEntity mesasEntity = mesasService.getById(idMesa);
             if (mesasEntity == null) {
-                throw new CustomException("Mesa con id " + idMesa + " no encontrada.");
+                throw new CustomException("Mesa con id " + idMesa + " no encontrada.", HttpStatus.NOT_FOUND);
             }
             mesasService.delete(mesasEntity);
+        } catch (CustomException e) {
+            throw e;
         } catch (Exception e) {
-            throw new CustomException("Error eliminando la mesa: " + e.getMessage());
+            throw new CustomException("Error eliminando la mesa: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

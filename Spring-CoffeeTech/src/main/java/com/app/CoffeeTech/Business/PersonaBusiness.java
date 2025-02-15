@@ -6,10 +6,11 @@ import com.app.CoffeeTech.Service.PersonaService;
 import com.app.CoffeeTech.Utilities.Exception.CustomException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class PersonaBusiness {
@@ -17,39 +18,56 @@ public class PersonaBusiness {
     @Autowired
     PersonaService personaService;
 
+    // ModelMapper instance to convert to DTO (This only works if the attribute names are the same in the entity and the DTO)
     private final ModelMapper modelMapper = new ModelMapper();
 
-    public List<PersonaDTO> findAll(){
+    // Find All People
+    public Page<PersonaDTO> findAll(Pageable pageable){
         try {
-            List<PersonaEntity> personasList = personaService.findAll();
-            if (personasList.isEmpty()){
-                return new ArrayList<>();
+            PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+            Page<PersonaEntity> personaPage = personaService.findAll(pageRequest);
+            if (personaPage.isEmpty()) {
+                return Page.empty();
             }
-            List<PersonaDTO> personasDtoList = new ArrayList<>();
-            personasList.forEach(PersonaEntity -> personasDtoList.add(modelMapper.map(PersonaEntity, PersonaDTO.class)));
-            return personasDtoList;
-        } catch (Exception e){
-            throw new CustomException("Error al obtener todas las personas.");
+            return personaPage.map(personaEntity -> modelMapper.map(personaEntity, PersonaDTO.class));
+        } catch (Exception e) {
+            throw new CustomException("Error al obtener todas las personas." + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    public PersonaDTO getById(Long id){
+    // Find Person by ID
+    public PersonaDTO findById(Long id) {
         try {
             PersonaEntity personaEntity = personaService.getById(id);
-            if (personaEntity == null){
-                throw new CustomException("Persona con id " + id + " no encontrada.");
+            if (personaEntity == null) {
+                throw new CustomException("Persona con id: " + id + " no encontrada.", HttpStatus.NOT_FOUND);
             }
             return modelMapper.map(personaEntity, PersonaDTO.class);
-        } catch (Exception e){
-            throw new CustomException("Error al obtener la persona por id.");
+        } catch (CustomException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new CustomException("Error al obtener la persona por id." + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
+    // Add Person
+    public void add(PersonaDTO personaDto) {
+        try {
+            PersonaEntity personaEntity = modelMapper.map(personaDto, PersonaEntity.class);
+            personaService.save(personaEntity);
+        } catch (CustomException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new CustomException("Error creando la persona: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // Update Person
     public void update(Long id, PersonaDTO personaDto) {
         try {
             PersonaEntity existingPerson = personaService.getById(id);
             if (existingPerson == null) {
-                throw new CustomException("Persona con id " + id + " no se encuentra.");
+                throw new CustomException("Persona con id: " + id + " no se encuentra.", HttpStatus.NOT_FOUND);
             }
             existingPerson.setDocumento(personaDto.getDocumento());
             existingPerson.setNombres(personaDto.getNombres());
@@ -59,34 +77,26 @@ public class PersonaBusiness {
             existingPerson.setTelefono(personaDto.getTelefono());
             existingPerson.setDireccion(personaDto.getDireccion());
             personaService.save(existingPerson);
+            personaService.save(existingPerson);
+        } catch (CustomException e) {
+            throw e;
         } catch (Exception e) {
-            throw new CustomException("Error al actualizar la persona.");
+            throw new CustomException("Error al actualizar la persona: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    public void create(PersonaDTO personaDto){
+    // Delete Person
+    public void delete(Long idPersona) {
         try {
-            String Documento = personaDto.getDocumento();
-            PersonaEntity existingPerson = personaService.findByDocument(Documento);
-            if (existingPerson != null) {
-                throw new CustomException("La persona con el documento " + Documento + " ya existe.");
-            }
-            PersonaEntity personaEntity = modelMapper.map(personaDto, PersonaEntity.class);
-            personaService.save(personaEntity);
-        } catch (Exception e){
-            throw new CustomException("Error creando la persona.");
-        }
-    }
-
-    public void delete(Long idPersonas) {
-        try {
-            PersonaEntity personaEntity = personaService.getById(idPersonas);
+            PersonaEntity personaEntity = personaService.getById(idPersona);
             if (personaEntity == null) {
-                throw new CustomException("Persona con id " + idPersonas + " no encontrada.");
+                throw new CustomException("Persona con id " + idPersona + " no encontrada.", HttpStatus.NOT_FOUND);
             }
             personaService.delete(personaEntity);
+        } catch (CustomException e) {
+            throw e;
         } catch (Exception e) {
-            throw new CustomException("Error eliminando la persona: " + e.getMessage());
+            throw new CustomException("Error eliminando la persona: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

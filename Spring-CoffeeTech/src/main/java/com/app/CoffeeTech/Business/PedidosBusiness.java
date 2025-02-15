@@ -6,10 +6,11 @@ import com.app.CoffeeTech.Service.PedidosService;
 import com.app.CoffeeTech.Utilities.Exception.CustomException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class PedidosBusiness {
@@ -17,66 +18,78 @@ public class PedidosBusiness {
     @Autowired
     PedidosService pedidosService;
 
+    // ModelMapper instance to convert to DTO (This only works if the attribute names are the same in the entity and the DTO)
     private final ModelMapper modelMapper = new ModelMapper();
 
-    public List<PedidosDTO> findAll(){
+    // Find All Orders
+    public Page<PedidosDTO> findAll(Pageable pageable){
         try {
-            List<PedidosEntity> pedidosList = pedidosService.findAll();
-            if (pedidosList.isEmpty()){
-                return new ArrayList<>();
+            PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+            Page<PedidosEntity> pedidosPage = pedidosService.findAll(pageRequest);
+            if (pedidosPage.isEmpty()) {
+                return Page.empty();
             }
-            List<PedidosDTO> pedidosDtoList = new ArrayList<>();
-            pedidosList.forEach(PedidosEntity -> pedidosDtoList.add(modelMapper.map(PedidosEntity, PedidosDTO.class)));
-            return pedidosDtoList;
-        } catch (Exception e){
-            throw new CustomException("Error al obtener todos los pedidos.");
+            return pedidosPage.map(pedidosEntity -> modelMapper.map(pedidosEntity, PedidosDTO.class));
+        } catch (Exception e) {
+            throw new CustomException("Error al obtener todos los pedidos." + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    public PedidosDTO getById(Long id){
+    // Find Order by ID
+    public PedidosDTO findById(Long id) {
         try {
             PedidosEntity pedidosEntity = pedidosService.getById(id);
-            if (pedidosEntity == null){
-                throw new CustomException("Pedido con id " + id + " no encontrado.");
+            if (pedidosEntity == null) {
+                throw new CustomException("Pedido con id: " + id + " no encontrado.", HttpStatus.NOT_FOUND);
             }
             return modelMapper.map(pedidosEntity, PedidosDTO.class);
-        } catch (Exception e){
-            throw new CustomException("Error al obtener el pedido por id.");
+        } catch (CustomException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new CustomException("Error al obtener el pedido por id." + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    public void update(Long id, PedidosDTO pedidosDto) {
+    // Add Order
+    public void add(PedidosDTO pedidosDto) {
+        try {
+            PedidosEntity classType = modelMapper.map(pedidosDto, PedidosEntity.class);
+            pedidosService.save(classType);
+        } catch (CustomException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new CustomException("Error creando el pedido: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // Update Order
+    public void update(Long id, PedidosDTO pedidosDTO) {
         try {
             PedidosEntity existingOrder = pedidosService.getById(id);
             if (existingOrder == null) {
-                throw new CustomException("Pedido con id " + id + " no se encuentra.");
+                throw new CustomException("Pedido con id: " + id + " no se encuentra.", HttpStatus.NOT_FOUND);
             }
-            existingOrder.setTotal(pedidosDto.getTotal());
+            existingOrder.setTotal(pedidosDTO.getTotal());
             pedidosService.save(existingOrder);
+        } catch (CustomException e) {
+            throw e;
         } catch (Exception e) {
-            throw new CustomException("Error al actualizar el pedido.");
+            throw new CustomException("Error al actualizar el pedido: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    public void create(PedidosDTO pedidosDto){
-        try {
-            PedidosEntity pedidosEntity = modelMapper.map(pedidosDto, PedidosEntity.class);
-            pedidosService.save(pedidosEntity);
-        } catch (Exception e){
-            throw new CustomException("Error creando el pedido.");
-        }
-    }
-
-    // Metodo para eliminar un pedido
+    // Delete Order
     public void delete(Long idPedido) {
         try {
             PedidosEntity pedidosEntity = pedidosService.getById(idPedido);
             if (pedidosEntity == null) {
-                throw new CustomException("Pedido con id " + idPedido + " no encontrado.");
+                throw new CustomException("Pedido con id " + idPedido + " no encontrado.", HttpStatus.NOT_FOUND);
             }
             pedidosService.delete(pedidosEntity);
+        } catch (CustomException e) {
+            throw e;
         } catch (Exception e) {
-            throw new CustomException("Error eliminando el pedido: " + e.getMessage());
+            throw new CustomException("Error eliminando el pedido: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }
