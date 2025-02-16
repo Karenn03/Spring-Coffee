@@ -3,10 +3,11 @@ package com.app.CoffeeTech.Service;
 import com.app.CoffeeTech.Entity.TipoProductoEntity;
 import com.app.CoffeeTech.Repository.TipoProductoRepository;
 import com.app.CoffeeTech.Service.DAO.IDAO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,8 +17,8 @@ public class TipoProductoService implements IDAO<TipoProductoEntity, Long> {
     TipoProductoRepository tipoProductoRepository;
 
     @Override
-    public List<TipoProductoEntity> findAll() {
-        return tipoProductoRepository.findAll();
+    public Page<TipoProductoEntity> findAll(PageRequest pageRequest) {
+        return tipoProductoRepository.findAll(pageRequest);
     }
 
     @Override

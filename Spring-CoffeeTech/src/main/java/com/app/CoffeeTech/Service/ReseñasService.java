@@ -3,10 +3,11 @@ package com.app.CoffeeTech.Service;
 import com.app.CoffeeTech.Entity.ReseñasEntity;
 import com.app.CoffeeTech.Repository.ReseñasRepository;
 import com.app.CoffeeTech.Service.DAO.IDAO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,8 +17,8 @@ public class ReseñasService implements IDAO<ReseñasEntity, Long> {
     ReseñasRepository reseñasRepository;
 
     @Override
-    public List<ReseñasEntity> findAll() {
-        return reseñasRepository.findAll();
+    public Page<ReseñasEntity> findAll(PageRequest pageRequest) {
+        return reseñasRepository.findAll(pageRequest);
     }
 
     @Override

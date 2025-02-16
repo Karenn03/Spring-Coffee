@@ -3,10 +3,11 @@ package com.app.CoffeeTech.Service;
 import com.app.CoffeeTech.Entity.MesasEntity;
 import com.app.CoffeeTech.Repository.MesasRepository;
 import com.app.CoffeeTech.Service.DAO.IDAO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,8 +17,8 @@ public class MesasService implements IDAO<MesasEntity, Long> {
     MesasRepository mesasRepository;
 
     @Override
-    public List<MesasEntity> findAll() {
-        return mesasRepository.findAll();
+    public Page<MesasEntity> findAll(PageRequest pageRequest) {
+        return mesasRepository.findAll(pageRequest);
     }
 
     @Override

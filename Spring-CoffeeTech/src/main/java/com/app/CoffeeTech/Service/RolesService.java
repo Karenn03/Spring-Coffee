@@ -3,10 +3,11 @@ package com.app.CoffeeTech.Service;
 import com.app.CoffeeTech.Entity.RolesEntity;
 import com.app.CoffeeTech.Repository.RolesRepository;
 import com.app.CoffeeTech.Service.DAO.IDAO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,8 +17,8 @@ public class RolesService implements IDAO<RolesEntity, Long> {
     RolesRepository rolesRepository;
 
     @Override
-    public List<RolesEntity> findAll() {
-        return rolesRepository.findAll();
+    public Page<RolesEntity> findAll(PageRequest pageRequest) {
+        return rolesRepository.findAll(pageRequest);
     }
 
     @Override

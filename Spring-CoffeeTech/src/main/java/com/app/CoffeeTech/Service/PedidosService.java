@@ -3,10 +3,11 @@ package com.app.CoffeeTech.Service;
 import com.app.CoffeeTech.Entity.PedidosEntity;
 import com.app.CoffeeTech.Repository.PedidosRepository;
 import com.app.CoffeeTech.Service.DAO.IDAO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,8 +17,8 @@ public class PedidosService implements IDAO<PedidosEntity, Long> {
     PedidosRepository pedidosRepository;
 
     @Override
-    public List<PedidosEntity> findAll() {
-        return pedidosRepository.findAll();
+    public Page<PedidosEntity> findAll(PageRequest pageRequest) {
+        return pedidosRepository.findAll(pageRequest);
     }
 
     @Override
