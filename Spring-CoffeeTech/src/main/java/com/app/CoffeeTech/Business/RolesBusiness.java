@@ -6,10 +6,11 @@ import com.app.CoffeeTech.Service.RolesService;
 import com.app.CoffeeTech.Utilities.Exception.CustomException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class RolesBusiness {
@@ -17,75 +18,78 @@ public class RolesBusiness {
     @Autowired
     RolesService rolesService;
 
+    // ModelMapper instance to convert to DTO (This only works if the attribute names are the same in the entity and the DTO)
     private final ModelMapper modelMapper = new ModelMapper();
 
-    //Metodo para traer todos los roles
-    public List<RolesDTO> findAll(){
+    // Find All Deliveries
+    public Page<RolesDTO> findAll(Pageable pageable) {
         try {
-            List<RolesEntity> rolesList = rolesService.findAll();
+            PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+            Page<RolesEntity> rolesList = rolesService.findAll(pageRequest);
             if (rolesList.isEmpty()){
-                return new ArrayList<>();
+                return Page.empty();
             }
-            List<RolesDTO> rolesDtoList = new ArrayList<>();
-            rolesList.forEach(RolesEntity -> rolesDtoList.add(modelMapper.map(RolesEntity, RolesDTO.class)));
-            return rolesDtoList;
+            return rolesList.map(rolesEntity -> modelMapper.map(rolesEntity, RolesDTO.class));
         } catch (Exception e){
-            throw new CustomException("Error al obtener todos los roles.");
+            throw new CustomException("Error al obtener todos los roles." + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    //Metodo para buscar por id
-    public RolesDTO getById(Long id){
+    // Find Roles by ID
+    public RolesDTO findById(Long id){
         try {
             RolesEntity rolesEntity = rolesService.getById(id);
             if (rolesEntity == null){
-                throw new CustomException("Rol con id " + id + " no encontrado.");
+                throw new CustomException("Rol con id " + id + " no encontrado.", HttpStatus.NOT_FOUND);
             }
             return modelMapper.map(rolesEntity, RolesDTO.class);
+        } catch (CustomException e) {
+            throw e;
         } catch (Exception e){
-            throw new CustomException("Error al obtener el rol por id.");
+            throw new CustomException("Error al obtener el rol por id." + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    // Método para actualizar un rol
+    // Add Roles
+    public void add(RolesDTO rolesDto){
+        try {
+            RolesEntity rolesEntity = modelMapper.map(rolesDto, RolesEntity.class);
+            rolesService.save(rolesEntity);
+        } catch (CustomException e) {
+            throw e;
+        } catch (Exception e){
+            throw new CustomException("Error creando el rol." + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // Update Roles
     public void update(Long id, RolesDTO rolesDto) {
         try {
             RolesEntity existingRole = rolesService.getById(id);
             if (existingRole == null) {
-                throw new CustomException("Rol con id " + id + " no se encuentra.");
+                throw new CustomException("Rol con id " + id + " no encontrado.", HttpStatus.NOT_FOUND);
             }
             existingRole.setNombreRol(rolesDto.getNombreRol());
             rolesService.save(existingRole);
+        } catch (CustomException e) {
+            throw e;
         } catch (Exception e) {
-            throw new CustomException("Error al actualizar el rol.");
+            throw new CustomException("Error al actualizar el rol." + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    //Metodo para Crear, Guardar un nuevo Rol
-    public void create(RolesDTO rolesDto){
+    // Delete Roles
+    public void delete(Long idRoles) {
         try {
-            String nombreRol = rolesDto.getNombreRol();
-            RolesEntity existingRole = rolesService.findByNombreRol(nombreRol);
-            if (existingRole != null) {
-                throw new CustomException("El rol con el nombre " + nombreRol + " ya existe.");
-            }
-            RolesEntity rolesEntity = modelMapper.map(rolesDto, RolesEntity.class);
-            rolesService.save(rolesEntity);
-        } catch (Exception e){
-            throw new CustomException("Error creando el rol.");
-        }
-    }
-
-    // Metodo para eliminar un rol
-    public void delete(Long idRol) {
-        try {
-            RolesEntity rolesEntity = rolesService.getById(idRol);
+            RolesEntity rolesEntity = rolesService.getById(idRoles);
             if (rolesEntity == null) {
-                throw new CustomException("Rol con id " + idRol + " no encontrado.");
+                throw new CustomException("Rol con id " + idRoles + " no encontrado.", HttpStatus.NOT_FOUND);
             }
             rolesService.delete(rolesEntity);
+        } catch (CustomException e) {
+            throw e;
         } catch (Exception e) {
-            throw new CustomException("Error eliminando el rol: " + e.getMessage());
+            throw new CustomException("Error eliminando el rol: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

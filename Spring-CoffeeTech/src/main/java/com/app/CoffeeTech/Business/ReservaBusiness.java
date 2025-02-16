@@ -6,10 +6,11 @@ import com.app.CoffeeTech.Service.ReservaService;
 import com.app.CoffeeTech.Utilities.Exception.CustomException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class ReservaBusiness {
@@ -17,65 +18,78 @@ public class ReservaBusiness {
     @Autowired
     ReservaService reservaService;
 
+    // ModelMapper instance to convert to DTO (This only works if the attribute names are the same in the entity and the DTO)
     private final ModelMapper modelMapper = new ModelMapper();
 
-    public List<ReservaDTO> findAll(){
+    // Find All Reservations
+    public Page<ReservaDTO> findAll(Pageable pageable) {
         try {
-            List<ReservaEntity> reservaList = reservaService.findAll();
+            PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+            Page<ReservaEntity> reservaList = reservaService.findAll(pageRequest);
             if (reservaList.isEmpty()){
-                return new ArrayList<>();
+                return Page.empty();
             }
-            List<ReservaDTO> reservaDtoList = new ArrayList<>();
-            reservaList.forEach(ReservaEntity -> reservaDtoList.add(modelMapper.map(ReservaEntity, ReservaDTO.class)));
-            return reservaDtoList;
+            return reservaList.map(reservaEntity -> modelMapper.map(reservaEntity, ReservaDTO.class));
         } catch (Exception e){
-            throw new CustomException("Error al obtener todas las reservas.");
+            throw new CustomException("Error al obtener todas las reservas." + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    public ReservaDTO getById(Long id){
+    // Find Reservation by ID
+    public ReservaDTO findById(Long id){
         try {
             ReservaEntity reservaEntity = reservaService.getById(id);
             if (reservaEntity == null){
-                throw new CustomException("Reserva con id " + id + " no encontrada.");
+                throw new CustomException("Reserva con id " + id + " no encontrada.", HttpStatus.NOT_FOUND);
             }
             return modelMapper.map(reservaEntity, ReservaDTO.class);
+        } catch (CustomException e) {
+            throw e;
         } catch (Exception e){
-            throw new CustomException("Error al obtener la reserva por id.");
+            throw new CustomException("Error al obtener la reserva por id." + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
+    // Add Reservation
+    public void add(ReservaDTO reservaDto){
+        try {
+            ReservaEntity reservaEntity = modelMapper.map(reservaDto, ReservaEntity.class);
+            reservaService.save(reservaEntity);
+        } catch (CustomException e) {
+            throw e;
+        } catch (Exception e){
+            throw new CustomException("Error creando la reserva." + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // Update Reservation
     public void update(Long id, ReservaDTO reservaDto) {
         try {
             ReservaEntity existingReservation = reservaService.getById(id);
             if (existingReservation == null) {
-                throw new CustomException("Reserva con id " + id + " no se encuentra.");
+                throw new CustomException("Reserva con id " + id + " no encontrada.", HttpStatus.NOT_FOUND);
             }
             existingReservation.setFecha(reservaDto.getFecha());
             reservaService.save(existingReservation);
+        } catch (CustomException e) {
+            throw e;
         } catch (Exception e) {
-            throw new CustomException("Error al actualizar la reserva.");
+            throw new CustomException("Error al actualizar la reserva." + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    public void create(ReservaDTO reservaDto){
-        try {
-            ReservaEntity reservaEntity = modelMapper.map(reservaDto, ReservaEntity.class);
-            reservaService.save(reservaEntity);
-        } catch (Exception e){
-            throw new CustomException("Error creando la reserva.");
-        }
-    }
-
+    // Delete Reservation
     public void delete(Long idReserva) {
         try {
             ReservaEntity reservaEntity = reservaService.getById(idReserva);
             if (reservaEntity == null) {
-                throw new CustomException("Reserva con id " + idReserva + " no encontrada.");
+                throw new CustomException("Reserva con id " + idReserva + " no encontrada.", HttpStatus.NOT_FOUND);
             }
             reservaService.delete(reservaEntity);
+        } catch (CustomException e) {
+            throw e;
         } catch (Exception e) {
-            throw new CustomException("Error eliminando la reserva: " + e.getMessage());
+            throw new CustomException("Error eliminando la reserva: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

@@ -40,7 +40,7 @@ public class DomicilioBusiness {
         try {
             DomicilioEntity domicilioEntity = domicilioService.getById(id);
             if (domicilioEntity == null){
-                throw new CustomException("Domiclio con id " + id + " no encontrado.", HttpStatus.NOT_FOUND);
+                throw new CustomException("Domicilio con id " + id + " no encontrado.", HttpStatus.NOT_FOUND);
             }
             return modelMapper.map(domicilioEntity, DomicilioDTO.class);
         } catch (CustomException e) {
@@ -50,11 +50,11 @@ public class DomicilioBusiness {
         }
     }
 
-    // Add Domicilio
+    // Add Delivery
     public void add(DomicilioDTO domicilioDto){
         try {
-            DomicilioEntity domiclioEntity = modelMapper.map(domicilioDto, DomicilioEntity.class);
-            domicilioService.save(domiclioEntity);
+            DomicilioEntity domicilioEntity = modelMapper.map(domicilioDto, DomicilioEntity.class);
+            domicilioService.save(domicilioEntity);
         } catch (CustomException e) {
             throw e;
         } catch (Exception e){
