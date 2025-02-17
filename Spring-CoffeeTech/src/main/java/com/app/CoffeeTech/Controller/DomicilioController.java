@@ -22,20 +22,20 @@ public class DomicilioController {
     @Autowired
     DomicilioBusiness domicilioBusiness;
 
-    // Find All Delivery
+    // FInd All Deliveries
     @GetMapping("/all")
     public ResponseEntity<Map<String, Object>> findAll(Pageable pageable) {
         try {
-            Page<DomicilioDTO> domiciliosList = domicilioBusiness.findAll(pageable);
-            if (domiciliosList.hasContent()) {
+            Page<DomicilioDTO> domicilioDTOPage = domicilioBusiness.findAll(pageable);
+            if (domicilioDTOPage.hasContent()) {
                 return new ResponseEntity<>(
                         ResponseHttpApi.responseHttpFindAll(
-                                domiciliosList.getContent(),
+                                domicilioDTOPage.getContent(),
                                 ResponseHttpApi.CODE_OK,
                                 "Deliveries found successfully.",
-                                domiciliosList.getTotalPages(),
-                                domiciliosList.getNumber(),
-                                (int) domiciliosList.getTotalElements()
+                                domicilioDTOPage.getTotalPages(),
+                                domicilioDTOPage.getNumber(),
+                                (int) domicilioDTOPage.getTotalElements()
                         ), HttpStatus.OK
                 );
             } else {
@@ -43,7 +43,7 @@ public class DomicilioController {
                         ResponseHttpApi.responseHttpFindAll(
                                 null,
                                 ResponseHttpApi.NO_CONTENT,
-                                "No deliveries found.",
+                                "No Deliveries found.",
                                 0, 0, 0
                         ), HttpStatus.NO_CONTENT
                 );
@@ -51,10 +51,9 @@ public class DomicilioController {
         } catch (Exception e) {
             return new ResponseEntity<>(
                     ResponseHttpApi.responseHttpError(
-                            "Error retrieving deliveries.",
-                            HttpStatus.INTERNAL_SERVER_ERROR,
-                            e.getMessage()
-                    ), HttpStatus.INTERNAL_SERVER_ERROR
+                            "Error retrieving Deliveries.",
+                            HttpStatus.INTERNAL_SERVER_ERROR),
+                    HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
@@ -76,25 +75,25 @@ public class DomicilioController {
                     ResponseHttpApi.responseHttpFindId(
                             null,
                             ResponseHttpApi.CODE_BAD,
-                            e.getMessage()),
-                    HttpStatus.CONFLICT
+                            e.getMessage()
+                    ), HttpStatus.CONFLICT
             );
         } catch (Exception e) {
             return new ResponseEntity<>(
                     ResponseHttpApi.responseHttpFindId(
                             null,
                             ResponseHttpApi.CODE_BAD,
-                            "Error getting Delivery." + e.getMessage()),
-                    HttpStatus.CONFLICT
+                            "Error getting Delivery: " + e.getMessage()
+                    ), HttpStatus.CONFLICT
             );
         }
     }
 
     // Add Delivery
-    @PostMapping("/create")
-    public ResponseEntity<Map<String, Object>> add(@Validated @RequestBody DomicilioDTO domicilioDto) {
+    @PostMapping("/add")
+    public ResponseEntity<Map<String, Object>> add(@Validated @RequestBody DomicilioDTO domicilioDTO) {
         try {
-            domicilioBusiness.create(domicilioDto);
+            domicilioBusiness.add(domicilioDTO);
             return new ResponseEntity<>(
                     ResponseHttpApi.responseHttpAction(
                             ResponseHttpApi.CODE_OK,
@@ -112,22 +111,21 @@ public class DomicilioController {
             return new ResponseEntity<>(
                     ResponseHttpApi.responseHttpError(
                             "Error creating Delivery.",
-                            HttpStatus.INTERNAL_SERVER_ERROR,
-                            e.getMessage()
-                    ), HttpStatus.INTERNAL_SERVER_ERROR
+                            HttpStatus.INTERNAL_SERVER_ERROR),
+                    HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
 
     // Update Delivery
     @PutMapping("/update/{id}")
-    public ResponseEntity<Map<String, Object>> update(@PathVariable Long id, @Validated @RequestBody DomicilioDTO domicilioDto) {
+    public ResponseEntity<Map<String, Object>> update(@PathVariable Long id, @Validated @RequestBody DomicilioDTO domicilioDTO) {
         try {
-            domicilioBusiness.update(id, domicilioDto);
+            domicilioBusiness.update(id, domicilioDTO);
             return new ResponseEntity<>(
                     ResponseHttpApi.responseHttpAction(
                             ResponseHttpApi.CODE_OK,
-                            "Delivery updated successfully"
+                            "Delivery updated successfully."
                     ), HttpStatus.OK
             );
         } catch (CustomException e) {
@@ -141,13 +139,13 @@ public class DomicilioController {
             return new ResponseEntity<>(
                     ResponseHttpApi.responseHttpError(
                             "Error updating Delivery.",
-                            HttpStatus.INTERNAL_SERVER_ERROR,
-                            e.getMessage()
-                    ), HttpStatus.INTERNAL_SERVER_ERROR
+                            HttpStatus.INTERNAL_SERVER_ERROR),
+                    HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
 
+    // Delete Delivery
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
         try {
@@ -155,7 +153,7 @@ public class DomicilioController {
             return new ResponseEntity<>(
                     ResponseHttpApi.responseHttpAction(
                             ResponseHttpApi.CODE_OK,
-                            "Delivery deleted successfully"
+                            "Delivery deleted successfully."
                     ), HttpStatus.OK
             );
         } catch (CustomException e) {
@@ -168,10 +166,9 @@ public class DomicilioController {
         } catch (Exception e) {
             return new ResponseEntity<>(
                     ResponseHttpApi.responseHttpError(
-                            "Error deleting Class Type.",
-                            HttpStatus.INTERNAL_SERVER_ERROR,
-                            e.getMessage()
-                    ), HttpStatus.INTERNAL_SERVER_ERROR
+                            "Error deleting Delivery.",
+                            HttpStatus.INTERNAL_SERVER_ERROR),
+                    HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }

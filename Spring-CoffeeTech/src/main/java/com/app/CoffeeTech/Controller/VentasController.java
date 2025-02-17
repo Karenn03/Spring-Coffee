@@ -3,14 +3,15 @@ package com.app.CoffeeTech.Controller;
 import com.app.CoffeeTech.Business.VentasBusiness;
 import com.app.CoffeeTech.DTO.VentasDTO;
 import com.app.CoffeeTech.Utilities.Exception.CustomException;
+import com.app.CoffeeTech.Utilities.Http.ResponseHttpApi;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -19,74 +20,154 @@ public class VentasController {
     @Autowired
     VentasBusiness ventasBusiness;
 
+    // FInd All Sales
     @GetMapping("/all")
-    public ResponseEntity<List<VentasDTO>> getAllVentas() {
-        List<VentasDTO> ventasList = ventasBusiness.findAll();
-        if (ventasList.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.ok(ventasList);
-        }
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> getVentaById(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> findAll(Pageable pageable) {
         try {
-            VentasDTO venta = ventasBusiness.getById(id);
-            Map<String, Object> response = new HashMap<>();
-            response.put("Status", "success");
-            response.put("data ", venta);
-            response.put("code", 200);
-            return ResponseEntity.ok(response);
-        } catch (CustomException e) {
-            return handleException(e);
+            Page<VentasDTO> ventasDTOPage = ventasBusiness.findAll(pageable);
+            if (ventasDTOPage.hasContent()) {
+                return new ResponseEntity<>(
+                        ResponseHttpApi.responseHttpFindAll(
+                                ventasDTOPage.getContent(),
+                                ResponseHttpApi.CODE_OK,
+                                "Sales found successfully.",
+                                ventasDTOPage.getTotalPages(),
+                                ventasDTOPage.getNumber(),
+                                (int) ventasDTOPage.getTotalElements()
+                        ), HttpStatus.OK
+                );
+            } else {
+                return new ResponseEntity<>(
+                        ResponseHttpApi.responseHttpFindAll(
+                                null,
+                                ResponseHttpApi.NO_CONTENT,
+                                "No Sales found.",
+                                0, 0, 0
+                        ), HttpStatus.NO_CONTENT
+                );
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpError(
+                            "Error retrieving Sales.",
+                            HttpStatus.INTERNAL_SERVER_ERROR),
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<Map<String, Object>> createVenta(@Validated @RequestBody VentasDTO ventasDto) {
+    // Find Sale by ID
+    @GetMapping("/find/{id}")
+    public ResponseEntity<Map<String, Object>> findById(@PathVariable Long id) {
         try {
-            ventasBusiness.create(ventasDto);
-            Map<String, Object> response = new HashMap<>();
-            response.put("Status", "success");
-            response.put("message ", "Sale Created Successfully");
-            response.put("code", 200);
-            return ResponseEntity.ok(response);
+            VentasDTO ventasDTO = ventasBusiness.findById(id);
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpFindId(
+                            ventasDTO,
+                            ResponseHttpApi.CODE_OK,
+                            "Successfully completed."
+                    ), HttpStatus.OK
+            );
         } catch (CustomException e) {
-            return handleException(e);
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpFindId(
+                            null,
+                            ResponseHttpApi.CODE_BAD,
+                            e.getMessage()
+                    ), HttpStatus.CONFLICT
+            );
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpFindId(
+                            null,
+                            ResponseHttpApi.CODE_BAD,
+                            "Error getting Sale: " + e.getMessage()
+                    ), HttpStatus.CONFLICT
+            );
         }
     }
 
+    // Add Sale
+    @PostMapping("/add")
+    public ResponseEntity<Map<String, Object>> add(@Validated @RequestBody VentasDTO ventasDTO) {
+        try {
+            ventasBusiness.add(ventasDTO);
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpAction(
+                            ResponseHttpApi.CODE_OK,
+                            "Sale added successfully."
+                    ), HttpStatus.CREATED
+            );
+        } catch (CustomException e) {
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpAction(
+                            ResponseHttpApi.CODE_BAD,
+                            e.getMessage()
+                    ), HttpStatus.BAD_REQUEST
+            );
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpError(
+                            "Error creating Sale.",
+                            HttpStatus.INTERNAL_SERVER_ERROR),
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+    // Update Sale
     @PutMapping("/update/{id}")
-    public ResponseEntity<Map<String, Object>> updateVenta(@PathVariable Long id, @Validated @RequestBody VentasDTO ventasDto) {
+    public ResponseEntity<Map<String, Object>> update(@PathVariable Long id, @Validated @RequestBody VentasDTO ventasDTO) {
         try {
-            ventasBusiness.update(id, ventasDto);
-            Map<String, Object> response = new HashMap<>();
-            response.put("status", "success");
-            response.put("message", "Sale Updated Successfully");
-            return ResponseEntity.ok(response);
+            ventasBusiness.update(id, ventasDTO);
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpAction(
+                            ResponseHttpApi.CODE_OK,
+                            "Sale updated successfully."
+                    ), HttpStatus.OK
+            );
         } catch (CustomException e) {
-            return handleException(e);
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpAction(
+                            ResponseHttpApi.CODE_BAD,
+                            e.getMessage()
+                    ), HttpStatus.BAD_REQUEST
+            );
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpError(
+                            "Error updating Sale.",
+                            HttpStatus.INTERNAL_SERVER_ERROR),
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
     }
 
+    // Delete Sale
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Map<String, Object>> deleteVenta(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
         try {
             ventasBusiness.delete(id);
-            Map<String, Object> response = new HashMap<>();
-            response.put("status", "success");
-            response.put("message", "Sale Deleted Successfully");
-            return ResponseEntity.ok(response);
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpAction(
+                            ResponseHttpApi.CODE_OK,
+                            "Sale deleted successfully."
+                    ), HttpStatus.OK
+            );
         } catch (CustomException e) {
-            return handleException(e);
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpAction(
+                            ResponseHttpApi.CODE_BAD,
+                            e.getMessage()
+                    ), HttpStatus.BAD_REQUEST
+            );
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpError(
+                            "Error deleting Sale.",
+                            HttpStatus.INTERNAL_SERVER_ERROR),
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
-    }
-
-    private ResponseEntity<Map<String, Object>> handleException(CustomException e) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("status", "error");
-        response.put("message", e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }

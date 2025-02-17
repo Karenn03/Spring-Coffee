@@ -3,14 +3,15 @@ package com.app.CoffeeTech.Controller;
 import com.app.CoffeeTech.Business.ReseñasBusiness;
 import com.app.CoffeeTech.DTO.ReseñasDTO;
 import com.app.CoffeeTech.Utilities.Exception.CustomException;
+import com.app.CoffeeTech.Utilities.Http.ResponseHttpApi;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -20,74 +21,154 @@ public class ReseñasController {
     @Autowired
     ReseñasBusiness reseñasBusiness;
 
+    // FInd All Reviews
     @GetMapping("/all")
-    public ResponseEntity<List<ReseñasDTO>> getAllReseñas() {
-        List<ReseñasDTO> reseñasList = reseñasBusiness.findAll();
-        if (reseñasList.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.ok(reseñasList);
-        }
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> getReseñaById(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> findAll(Pageable pageable) {
         try {
-            ReseñasDTO reseñas = reseñasBusiness.getById(id);
-            Map<String, Object> response = new HashMap<>();
-            response.put("Status", "success");
-            response.put("data ", reseñas);
-            response.put("code", 200);
-            return ResponseEntity.ok(response);
-        } catch (CustomException e) {
-            return handleException(e);
+            Page<ReseñasDTO> reseñasDTOPage = reseñasBusiness.findAll(pageable);
+            if (reseñasDTOPage.hasContent()) {
+                return new ResponseEntity<>(
+                        ResponseHttpApi.responseHttpFindAll(
+                                reseñasDTOPage.getContent(),
+                                ResponseHttpApi.CODE_OK,
+                                "Reviews found successfully.",
+                                reseñasDTOPage.getTotalPages(),
+                                reseñasDTOPage.getNumber(),
+                                (int) reseñasDTOPage.getTotalElements()
+                        ), HttpStatus.OK
+                );
+            } else {
+                return new ResponseEntity<>(
+                        ResponseHttpApi.responseHttpFindAll(
+                                null,
+                                ResponseHttpApi.NO_CONTENT,
+                                "No Reviews found.",
+                                0, 0, 0
+                        ), HttpStatus.NO_CONTENT
+                );
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpError(
+                            "Error retrieving Reviews.",
+                            HttpStatus.INTERNAL_SERVER_ERROR),
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<Map<String, Object>> createReseña(@Validated @RequestBody ReseñasDTO reseñasDto) {
+    // Find Review by ID
+    @GetMapping("/find/{id}")
+    public ResponseEntity<Map<String, Object>> findById(@PathVariable Long id) {
         try {
-            reseñasBusiness.create(reseñasDto);
-            Map<String, Object> response = new HashMap<>();
-            response.put("Status", "success");
-            response.put("message ", "Review Created Successfully");
-            response.put("code", 200);
-            return ResponseEntity.ok(response);
+            ReseñasDTO reseñasDTO = reseñasBusiness.findById(id);
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpFindId(
+                            reseñasDTO,
+                            ResponseHttpApi.CODE_OK,
+                            "Successfully completed."
+                    ), HttpStatus.OK
+            );
         } catch (CustomException e) {
-            return handleException(e);
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpFindId(
+                            null,
+                            ResponseHttpApi.CODE_BAD,
+                            e.getMessage()
+                    ), HttpStatus.CONFLICT
+            );
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpFindId(
+                            null,
+                            ResponseHttpApi.CODE_BAD,
+                            "Error getting Review: " + e.getMessage()
+                    ), HttpStatus.CONFLICT
+            );
         }
     }
 
+    // Add Review
+    @PostMapping("/add")
+    public ResponseEntity<Map<String, Object>> add(@Validated @RequestBody ReseñasDTO reseñasDTO) {
+        try {
+            reseñasBusiness.add(reseñasDTO);
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpAction(
+                            ResponseHttpApi.CODE_OK,
+                            "Review added successfully."
+                    ), HttpStatus.CREATED
+            );
+        } catch (CustomException e) {
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpAction(
+                            ResponseHttpApi.CODE_BAD,
+                            e.getMessage()
+                    ), HttpStatus.BAD_REQUEST
+            );
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpError(
+                            "Error creating Review.",
+                            HttpStatus.INTERNAL_SERVER_ERROR),
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+    // Update Review
     @PutMapping("/update/{id}")
-    public ResponseEntity<Map<String, Object>> updateReseña(@PathVariable Long id, @Validated @RequestBody ReseñasDTO reseñasDto) {
+    public ResponseEntity<Map<String, Object>> update(@PathVariable Long id, @Validated @RequestBody ReseñasDTO reseñasDTO) {
         try {
-            reseñasBusiness.update(id, reseñasDto);
-            Map<String, Object> response = new HashMap<>();
-            response.put("status", "success");
-            response.put("message", "Review Updated Successfully");
-            return ResponseEntity.ok(response);
+            reseñasBusiness.update(id, reseñasDTO);
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpAction(
+                            ResponseHttpApi.CODE_OK,
+                            "Review updated successfully."
+                    ), HttpStatus.OK
+            );
         } catch (CustomException e) {
-            return handleException(e);
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpAction(
+                            ResponseHttpApi.CODE_BAD,
+                            e.getMessage()
+                    ), HttpStatus.BAD_REQUEST
+            );
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpError(
+                            "Error updating Review.",
+                            HttpStatus.INTERNAL_SERVER_ERROR),
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
     }
 
+    // Delete Review
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Map<String, Object>> deleteReseña(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
         try {
             reseñasBusiness.delete(id);
-            Map<String, Object> response = new HashMap<>();
-            response.put("status", "success");
-            response.put("message", "Review Deleted Successfully");
-            return ResponseEntity.ok(response);
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpAction(
+                            ResponseHttpApi.CODE_OK,
+                            "Review deleted successfully."
+                    ), HttpStatus.OK
+            );
         } catch (CustomException e) {
-            return handleException(e);
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpAction(
+                            ResponseHttpApi.CODE_BAD,
+                            e.getMessage()
+                    ), HttpStatus.BAD_REQUEST
+            );
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpError(
+                            "Error deleting Review.",
+                            HttpStatus.INTERNAL_SERVER_ERROR),
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
-    }
-
-    private ResponseEntity<Map<String, Object>> handleException(CustomException e) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("status", "error");
-        response.put("message", e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }

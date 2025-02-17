@@ -3,14 +3,15 @@ package com.app.CoffeeTech.Controller;
 import com.app.CoffeeTech.Business.PersonaBusiness;
 import com.app.CoffeeTech.DTO.PersonaDTO;
 import com.app.CoffeeTech.Utilities.Exception.CustomException;
+import com.app.CoffeeTech.Utilities.Http.ResponseHttpApi;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -20,74 +21,154 @@ public class PersonaController {
     @Autowired
     PersonaBusiness personaBusiness;
 
+    // FInd All People
     @GetMapping("/all")
-    public ResponseEntity<List<PersonaDTO>> getAllPersonas() {
-        List<PersonaDTO> personasList = personaBusiness.findAll();
-        if (personasList.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.ok(personasList);
-        }
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> getPersonaById(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> findAll(Pageable pageable) {
         try {
-            PersonaDTO personas = personaBusiness.getById(id);
-            Map<String, Object> response = new HashMap<>();
-            response.put("Status", "success");
-            response.put("data ", personas);
-            response.put("code", 200);
-            return ResponseEntity.ok(response);
-        } catch (CustomException e) {
-            return handleException(e);
+            Page<PersonaDTO> personaDTOPage = personaBusiness.findAll(pageable);
+            if (personaDTOPage.hasContent()) {
+                return new ResponseEntity<>(
+                        ResponseHttpApi.responseHttpFindAll(
+                                personaDTOPage.getContent(),
+                                ResponseHttpApi.CODE_OK,
+                                "People found successfully.",
+                                personaDTOPage.getTotalPages(),
+                                personaDTOPage.getNumber(),
+                                (int) personaDTOPage.getTotalElements()
+                        ), HttpStatus.OK
+                );
+            } else {
+                return new ResponseEntity<>(
+                        ResponseHttpApi.responseHttpFindAll(
+                                null,
+                                ResponseHttpApi.NO_CONTENT,
+                                "No People found.",
+                                0, 0, 0
+                        ), HttpStatus.NO_CONTENT
+                );
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpError(
+                            "Error retrieving People.",
+                            HttpStatus.INTERNAL_SERVER_ERROR),
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<Map<String, Object>> createPersona(@Validated @RequestBody PersonaDTO personaDto) {
+    // Find Person by ID
+    @GetMapping("/find/{id}")
+    public ResponseEntity<Map<String, Object>> findById(@PathVariable Long id) {
         try {
-            personaBusiness.create(personaDto);
-            Map<String, Object> response = new HashMap<>();
-            response.put("Status", "success");
-            response.put("message ", "Person Created Successfully");
-            response.put("code", 200);
-            return ResponseEntity.ok(response);
+            PersonaDTO personaDTO = personaBusiness.findById(id);
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpFindId(
+                            personaDTO,
+                            ResponseHttpApi.CODE_OK,
+                            "Successfully completed."
+                    ), HttpStatus.OK
+            );
         } catch (CustomException e) {
-            return handleException(e);
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpFindId(
+                            null,
+                            ResponseHttpApi.CODE_BAD,
+                            e.getMessage()
+                    ), HttpStatus.CONFLICT
+            );
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpFindId(
+                            null,
+                            ResponseHttpApi.CODE_BAD,
+                            "Error getting Person: " + e.getMessage()
+                    ), HttpStatus.CONFLICT
+            );
         }
     }
 
+    // Add Person
+    @PostMapping("/add")
+    public ResponseEntity<Map<String, Object>> add(@Validated @RequestBody PersonaDTO personaDTO) {
+        try {
+            personaBusiness.add(personaDTO);
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpAction(
+                            ResponseHttpApi.CODE_OK,
+                            "Person added successfully."
+                    ), HttpStatus.CREATED
+            );
+        } catch (CustomException e) {
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpAction(
+                            ResponseHttpApi.CODE_BAD,
+                            e.getMessage()
+                    ), HttpStatus.BAD_REQUEST
+            );
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpError(
+                            "Error creating Person.",
+                            HttpStatus.INTERNAL_SERVER_ERROR),
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+    // Update Person
     @PutMapping("/update/{id}")
-    public ResponseEntity<Map<String, Object>> updatePersona(@PathVariable Long id, @Validated @RequestBody PersonaDTO personaDto) {
+    public ResponseEntity<Map<String, Object>> update(@PathVariable Long id, @Validated @RequestBody PersonaDTO personaDTO) {
         try {
-            personaBusiness.update(id, personaDto);
-            Map<String, Object> response = new HashMap<>();
-            response.put("status", "success");
-            response.put("message", "Person Updated Successfully");
-            return ResponseEntity.ok(response);
+            personaBusiness.update(id, personaDTO);
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpAction(
+                            ResponseHttpApi.CODE_OK,
+                            "Person updated successfully."
+                    ), HttpStatus.OK
+            );
         } catch (CustomException e) {
-            return handleException(e);
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpAction(
+                            ResponseHttpApi.CODE_BAD,
+                            e.getMessage()
+                    ), HttpStatus.BAD_REQUEST
+            );
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpError(
+                            "Error updating Person.",
+                            HttpStatus.INTERNAL_SERVER_ERROR),
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
     }
 
+    // Delete Person
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Map<String, Object>> deletePerson(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
         try {
             personaBusiness.delete(id);
-            Map<String, Object> response = new HashMap<>();
-            response.put("status", "success");
-            response.put("message", "Person Deleted Successfully");
-            return ResponseEntity.ok(response);
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpAction(
+                            ResponseHttpApi.CODE_OK,
+                            "Person deleted successfully."
+                    ), HttpStatus.OK
+            );
         } catch (CustomException e) {
-            return handleException(e);
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpAction(
+                            ResponseHttpApi.CODE_BAD,
+                            e.getMessage()
+                    ), HttpStatus.BAD_REQUEST
+            );
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    ResponseHttpApi.responseHttpError(
+                            "Error deleting Person.",
+                            HttpStatus.INTERNAL_SERVER_ERROR),
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
-    }
-
-    private ResponseEntity<Map<String, Object>> handleException(CustomException e) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("status", "error");
-        response.put("message", e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }
