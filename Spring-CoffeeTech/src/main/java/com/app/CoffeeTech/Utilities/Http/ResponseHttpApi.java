@@ -50,13 +50,12 @@ public class ResponseHttpApi {
     }
 
     //Error
-    public static Map<String, Object> responseHttpError(String result, HttpStatus codeMessage, String data) {
+    public static Map<String, Object> responseHttpError(String message, HttpStatus codeMessage) {
         Map<String, Object> response = new HashMap<>();
 
         response.put("date", new Date());
         response.put("code", codeMessage.value());
-        response.put("message", result);
-        response.put("data", data);
+        response.put("message", message);
 
         return response;
     }
