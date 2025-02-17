@@ -47,16 +47,8 @@ public class PedidosEntity implements Serializable {
     // Breakout Table
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "PedidosHasProductos",
-            joinColumns = {
-                    @JoinColumn(name = "idPedidos", nullable = false),
-                    @JoinColumn(name = "idMesas", referencedColumnName = "idMesas", nullable = true),
-                    @JoinColumn(name = "idVentas", referencedColumnName = "idVentas", nullable = false),
-                    @JoinColumn(name = "idPersonas", referencedColumnName = "idPersonas", nullable = false)
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(name = "idProductos", nullable = false),
-                    @JoinColumn(name = "idTipoProducto", referencedColumnName = "idTipoProducto", nullable = false)
-            })
+            joinColumns = @JoinColumn(name = "idPedidos", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "idProductos", nullable = false))
     private List<ProductosEntity> productos;
 
 }
