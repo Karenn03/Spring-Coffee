@@ -17,14 +17,10 @@ public class MesasEntity implements Serializable {
     @Column(name = "idMesas")
     private Long idMesas;
 
-    @Column(name = "capacidad", nullable = false)
-    private Long capacidad;
+    @Column(name = "Numero", nullable = false)
+    private Long numero;
 
     @Column(nullable = false, columnDefinition = "boolean default true")
     private Boolean state;
-
-    // Relations
-    @OneToOne(mappedBy = "mesas", cascade = CascadeType.REMOVE)
-    private ReservaEntity reserva;
 
 }

@@ -1,7 +1,7 @@
 package com.app.CoffeeTech.Controller;
 
-import com.app.CoffeeTech.Business.ReservaBusiness;
-import com.app.CoffeeTech.DTO.ReservaDTO;
+import com.app.CoffeeTech.Business.PrivilegiosBusiness;
+import com.app.CoffeeTech.DTO.PrivilegiosDTO;
 import com.app.CoffeeTech.Utilities.Exception.CustomException;
 import com.app.CoffeeTech.Utilities.Http.ResponseHttpApi;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,26 +15,26 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/reservas")
-public class ReservaController {
+@RequestMapping("/api/privilegios")
+public class PrivilegiosControler {
 
     @Autowired
-    ReservaBusiness reservaBusiness;
+    PrivilegiosBusiness privilegiosBusiness;
 
-    // FInd All Reservation
+    // FInd All Privileges
     @GetMapping("/all")
     public ResponseEntity<Map<String, Object>> findAll(Pageable pageable) {
         try {
-            Page<ReservaDTO> reservaDTOPage = reservaBusiness.findAll(pageable);
-            if (reservaDTOPage.hasContent()) {
+            Page<PrivilegiosDTO> privilegiosDTOPage = privilegiosBusiness.findAll(pageable);
+            if (privilegiosDTOPage.hasContent()) {
                 return new ResponseEntity<>(
                         ResponseHttpApi.responseHttpFindAll(
-                                reservaDTOPage.getContent(),
+                                privilegiosDTOPage.getContent(),
                                 ResponseHttpApi.CODE_OK,
-                                "Reservation found successfully.",
-                                reservaDTOPage.getTotalPages(),
-                                reservaDTOPage.getNumber(),
-                                (int) reservaDTOPage.getTotalElements()
+                                "Privileges found successfully.",
+                                privilegiosDTOPage.getTotalPages(),
+                                privilegiosDTOPage.getNumber(),
+                                (int) privilegiosDTOPage.getTotalElements()
                         ), HttpStatus.OK
                 );
             } else {
@@ -42,7 +42,7 @@ public class ReservaController {
                         ResponseHttpApi.responseHttpFindAll(
                                 null,
                                 ResponseHttpApi.NO_CONTENT,
-                                "No Reservation found.",
+                                "No Privileges found.",
                                 0, 0, 0
                         ), HttpStatus.NO_CONTENT
                 );
@@ -50,21 +50,21 @@ public class ReservaController {
         } catch (Exception e) {
             return new ResponseEntity<>(
                     ResponseHttpApi.responseHttpError(
-                            "Error retrieving Reservation.",
+                            "Error retrieving Privileges.",
                             HttpStatus.INTERNAL_SERVER_ERROR),
                     HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
 
-    // Find Reservation by ID
+    // Find Privilege by ID
     @GetMapping("/find/{id}")
     public ResponseEntity<Map<String, Object>> findById(@PathVariable Long id) {
         try {
-            ReservaDTO reservaDTO = reservaBusiness.findById(id);
+            PrivilegiosDTO privilegiosDTO = privilegiosBusiness.findById(id);
             return new ResponseEntity<>(
                     ResponseHttpApi.responseHttpFindId(
-                            reservaDTO,
+                            privilegiosDTO,
                             ResponseHttpApi.CODE_OK,
                             "Successfully completed."
                     ), HttpStatus.OK
@@ -82,21 +82,21 @@ public class ReservaController {
                     ResponseHttpApi.responseHttpFindId(
                             null,
                             ResponseHttpApi.CODE_BAD,
-                            "Error getting Reservation: " + e.getMessage()
+                            "Error getting Privilege: " + e.getMessage()
                     ), HttpStatus.CONFLICT
             );
         }
     }
 
-    // Add Reservation
+    // Add Privilege
     @PostMapping("/add")
-    public ResponseEntity<Map<String, Object>> add(@Validated @RequestBody ReservaDTO reservaDTO) {
+    public ResponseEntity<Map<String, Object>> add(@Validated @RequestBody PrivilegiosDTO privilegiosDTO) {
         try {
-            reservaBusiness.add(reservaDTO);
+            privilegiosBusiness.add(privilegiosDTO);
             return new ResponseEntity<>(
                     ResponseHttpApi.responseHttpAction(
                             ResponseHttpApi.CODE_OK,
-                            "Reservation added successfully."
+                            "Privilege added successfully."
                     ), HttpStatus.CREATED
             );
         } catch (CustomException e) {
@@ -109,22 +109,22 @@ public class ReservaController {
         } catch (Exception e) {
             return new ResponseEntity<>(
                     ResponseHttpApi.responseHttpError(
-                            "Error creating Reservation.",
+                            "Error creating Privilege.",
                             HttpStatus.INTERNAL_SERVER_ERROR),
                     HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
 
-    // Update Reservation
+    // Update Privilege
     @PutMapping("/update/{id}")
-    public ResponseEntity<Map<String, Object>> update(@PathVariable Long id, @Validated @RequestBody ReservaDTO reservaDTO) {
+    public ResponseEntity<Map<String, Object>> update(@PathVariable Long id, @Validated @RequestBody PrivilegiosDTO privilegiosDTO) {
         try {
-            reservaBusiness.update(id, reservaDTO);
+            privilegiosBusiness.update(id, privilegiosDTO);
             return new ResponseEntity<>(
                     ResponseHttpApi.responseHttpAction(
                             ResponseHttpApi.CODE_OK,
-                            "Reservation updated successfully."
+                            "Privilege updated successfully."
                     ), HttpStatus.OK
             );
         } catch (CustomException e) {
@@ -137,22 +137,22 @@ public class ReservaController {
         } catch (Exception e) {
             return new ResponseEntity<>(
                     ResponseHttpApi.responseHttpError(
-                            "Error updating Reservation.",
+                            "Error updating Privilege.",
                             HttpStatus.INTERNAL_SERVER_ERROR),
                     HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
 
-    // Delete Reservation
+    // Delete Privilege
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
         try {
-            reservaBusiness.delete(id);
+            privilegiosBusiness.delete(id);
             return new ResponseEntity<>(
                     ResponseHttpApi.responseHttpAction(
                             ResponseHttpApi.CODE_OK,
-                            "Reservation deleted successfully."
+                            "Privilege deleted successfully."
                     ), HttpStatus.OK
             );
         } catch (CustomException e) {
@@ -165,7 +165,7 @@ public class ReservaController {
         } catch (Exception e) {
             return new ResponseEntity<>(
                     ResponseHttpApi.responseHttpError(
-                            "Error deleting Reservation.",
+                            "Error deleting Privilege.",
                             HttpStatus.INTERNAL_SERVER_ERROR),
                     HttpStatus.INTERNAL_SERVER_ERROR
             );

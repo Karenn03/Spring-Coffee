@@ -50,4 +50,5 @@ public class RolesService implements IDAO<RolesEntity, Long> {
     public RolesEntity findByNombreRol(String nombreRol) {
         return rolesRepository.findByNombreRol(nombreRol);
     }
+
 }

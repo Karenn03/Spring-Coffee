@@ -69,7 +69,7 @@ public class MesasBusiness {
             if (existingTable == null) {
                 throw new CustomException("Mesa con id " + id + " no se encuentra.", HttpStatus.NOT_FOUND);
             }
-            existingTable.setCapacidad(mesasDto.getCapacidad());
+            existingTable.setNumero(mesasDto.getNumero());
             mesasService.save(existingTable);
         } catch (CustomException e) {
             throw e;

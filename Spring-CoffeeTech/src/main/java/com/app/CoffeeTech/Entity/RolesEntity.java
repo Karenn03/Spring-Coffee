@@ -18,12 +18,25 @@ public class RolesEntity implements Serializable {
     @Column(name = "idRoles")
     private Long idRoles;
 
-    @Column(name = "nombre_rol", nullable = false, length = 50)
-    private String nombreRol;
+    @Column(name = "nombre_rol", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private RolesEntity.NombreRol nombreRol;
+
+    public enum NombreRol {
+        Gerente,
+        Barista,
+        Panadero,
+        Camarero,
+        Cliente
+    }
+
+    // Relations
+    @ManyToMany(mappedBy = "roles")
+    private List<PrivilegiosEntity> privilegios;
 
     // Breakout Table
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "PersonasHasRoles",
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "RolesHasPersonas",
             joinColumns = @JoinColumn(name = "idRoles", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "idPersonas", nullable = false))
     private List<PersonaEntity> personas;

@@ -46,4 +46,9 @@ public class MesasService implements IDAO<MesasEntity, Long> {
     public void create(MesasEntity entity) {
         this.mesasRepository.save(entity);
     }
+
+    public MesasEntity findByNumber(Long numero) {
+        return mesasRepository.findByNumero(numero);
+    }
+
 }

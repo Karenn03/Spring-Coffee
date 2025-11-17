@@ -69,7 +69,7 @@ public class PromocionesBusiness {
             if (existingPromotion == null) {
                 throw new CustomException("Promoción con id " + id + " no encontrada.", HttpStatus.NOT_FOUND);
             }
-            existingPromotion.setNombrePromo(promocionesDto.getNombrePromo());
+            existingPromotion.setNombrePromocion(promocionesDto.getNombrePromocion());
             promocionesService.save(existingPromotion);
         } catch (CustomException e) {
             throw e;

@@ -18,11 +18,11 @@ public class PromocionesEntity {
     @Column(name = "idPromociones")
     private Long idPromociones;
 
-    @Column(name = "nombre_promo", nullable = false, length = 100)
-    private String nombrePromo;
+    @Column(name = "nombre_promocion", nullable = false, length = 100)
+    private String nombrePromocion;
 
-    @Column(name = "descripcion_promo", nullable = false, length = 200)
-    private String descripcionPromo;
+    @Column(name = "descripcion_promocion", nullable = false, length = 200)
+    private String descripcionPromocion;
 
     @Column(name = "fecha_inicio", nullable = false, length = 20)
     private LocalDateTime fechaInicio;
@@ -30,14 +30,16 @@ public class PromocionesEntity {
     @Column(name = "fecha_final", nullable = false, length = 20)
     private LocalDateTime fechaFinal;
 
+    @Column(name = "tipo_descuento", nullable = false)
     @Enumerated(EnumType.STRING)
-    private TipoDescuento tipo_descuento;
+    private TipoDescuento tipoDescuento;
 
     @Column(name = "valor_descuento", nullable = false)
     private Double valorDescuento;
 
+    @Column(name = "estado_promocion", nullable = false)
     @Enumerated(EnumType.STRING)
-    private EstadoPromocion estado;
+    private EstadoPromocion estadoPromocion;
 
     public enum TipoDescuento {
         Descuento_por_Cantidad,

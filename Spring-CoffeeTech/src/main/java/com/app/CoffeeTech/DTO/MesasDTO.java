@@ -11,9 +11,9 @@ public class MesasDTO {
 
     private Long idMesas;
 
-    @NotNull(message = "La capacidad es obligatoria.")
-    @Min(value = 1, message = "La capacidad debe ser mayor o igual a 1")
-    private Long capacidad;
+    @NotNull(message = "El número de la mesa es obligatorio.")
+    @Min(value = 1, message = "El número de la mesa debe ser mayor o igual a 1")
+    private Long numero;
 
     @NotNull(message = "El estado es obligatorio")
     private Boolean state;

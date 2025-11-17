@@ -2,7 +2,9 @@ package com.app.CoffeeTech.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Getter
@@ -37,5 +39,22 @@ public class PersonaEntity implements Serializable {
 
     @Column(name = "direccion", nullable = false, length = 120)
     private String direccion;
+
+    // Booleans that Spring Security needs
+    @Column(name = "is_enabled")
+    private boolean isEnabled;
+
+    @Column(name = "account_no_locked")
+    private boolean accountNoLocked;
+
+    @Column(name = "account_no_expired")
+    private boolean accountNoExpired;
+
+    @Column(name = "credential_no_expired")
+    private boolean credentialNoExpired;
+
+    // Relations
+    @ManyToMany(mappedBy = "personas")
+    private List<RolesEntity> roles;
 
 }

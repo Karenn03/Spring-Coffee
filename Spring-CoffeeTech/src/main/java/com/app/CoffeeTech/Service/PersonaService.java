@@ -50,4 +50,5 @@ public class PersonaService implements IDAO<PersonaEntity, Long> {
     public PersonaEntity findByDocument(String documento) {
         return personaRepository.findByDocumento(documento);
     }
+
 }

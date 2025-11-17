@@ -99,7 +99,7 @@ public class RolesController {
             return new ResponseEntity<>(
                     ResponseHttpApi.responseHttpAction(
                             ResponseHttpApi.CODE_OK,
-                            "Roles added successfully."
+                            "Role added successfully."
                     ), HttpStatus.CREATED
             );
         } catch (CustomException e) {
@@ -112,7 +112,7 @@ public class RolesController {
         } catch (Exception e) {
             return new ResponseEntity<>(
                     ResponseHttpApi.responseHttpError(
-                            "Error creating Roles.",
+                            "Error creating Role.",
                             HttpStatus.INTERNAL_SERVER_ERROR),
                     HttpStatus.INTERNAL_SERVER_ERROR
             );

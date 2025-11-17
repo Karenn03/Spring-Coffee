@@ -69,7 +69,7 @@ public class RolesBusiness {
             if (existingRole == null) {
                 throw new CustomException("Rol con id " + id + " no encontrado.", HttpStatus.NOT_FOUND);
             }
-            existingRole.setNombreRol(rolesDto.getNombreRol());
+            existingRole.setNombreRol(RolesEntity.NombreRol.valueOf(rolesDto.getNombreRol()));
             rolesService.save(existingRole);
         } catch (CustomException e) {
             throw e;

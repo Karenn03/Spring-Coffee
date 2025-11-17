@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/personas")
+@PreAuthorize("denyAll()")
 public class PersonaController {
 
     @Autowired
@@ -23,6 +25,7 @@ public class PersonaController {
 
     // FInd All People
     @GetMapping("/all")
+    @PreAuthorize("hasAuthority('Read')")
     public ResponseEntity<Map<String, Object>> findAll(Pageable pageable) {
         try {
             Page<PersonaDTO> personaDTOPage = personaBusiness.findAll(pageable);

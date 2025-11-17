@@ -3,7 +3,7 @@ spring:
     name: DBCoffee
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/DBCoffee
+    url: jdbc:postgresql://localhost:5433/DBCoffee
     username: postgres
     password: "KM1013599968"
     driver-class-name: org.postgresql.Driver

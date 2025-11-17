@@ -1,5 +1,6 @@
 package com.app.CoffeeTech.DTO;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -30,6 +31,7 @@ public class PersonaDTO {
     private String correoElectronico;
 
     @NotBlank(message = "La contraseña es obligatoria.")
+    @JsonProperty("contraseña")
     private String contraseña;
 
     @NotBlank(message = "El teléfono es obligatorio.")
