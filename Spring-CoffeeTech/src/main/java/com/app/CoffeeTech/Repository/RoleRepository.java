@@ -1,0 +1,10 @@
+package com.app.CoffeeTech.Repository;
+
+import com.app.CoffeeTech.Entity.RoleEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface RoleRepository extends JpaRepository<RoleEntity, Long> {
+    RoleEntity findByNombreRol(String nombreRol);
+}
